@@ -1,0 +1,28 @@
+body {
+    background-color: #111;
+    color: #eee;
+    font-family: monospace;
+    margin: 0;
+}
+#game-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+#log-window {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #333;
+    padding: 5px;
+    background-color: #000;
+}
+#input-area {
+    display: flex;
+    margin-top: 5px;
+}
+#chat-input {
+    flex: 1;
+}
+#quick-attack-button {
+    margin-top: 10px;
+}

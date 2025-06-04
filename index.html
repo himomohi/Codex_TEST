@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>환상의 세계 MUD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-container">
+    <div id="status-display"></div>
+    <div id="navigation-info">
+        <span id="current-room-name"></span>
+        <span id="available-exits"></span>
+        <span id="room-items"></span>
+        <span id="room-npcs"></span>
+        <span id="room-monsters"></span>
+    </div>
+    <div id="log-window"></div>
+    <div id="input-area">
+        <input type="text" id="chat-input" autocomplete="off" />
+        <button id="send-button">전송</button>
+    </div>
+    <button id="quick-attack-button" style="display:none;">빠른 공격!</button>
+</div>
+<div id="map-display" style="display:none;">
+    <pre id="map-grid"></pre>
+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>
