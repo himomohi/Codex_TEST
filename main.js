@@ -1,4 +1,4 @@
-import { initUI, logMessage, updateStatus, updateNavigation } from './uiManager.js';
+import { initUI, logMessage, updateStatus, updateNavigation, updateCombatUI } from './uiManager.js';
 import { parseCommand } from './commandParser.js';
 import { gameState, initGame } from './player.js';
 import { getCurrentRoom } from './mapManager.js';
@@ -11,6 +11,12 @@ function setupEventListeners() {
         if (e.key === 'Enter') {
             handleInput(input.value);
         }
+    });
+    const quickBtn = document.getElementById('quick-attack-button');
+    quickBtn.addEventListener('click', () => {
+        logMessage('> 공격');
+        parseCommand('공격');
+        updateUI();
     });
 }
 
@@ -27,6 +33,7 @@ function updateUI() {
     updateStatus(gameState);
     const room = getCurrentRoom();
     updateNavigation(room);
+    updateCombatUI(room);
 }
 
 window.addEventListener('load', () => {
