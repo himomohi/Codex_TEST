@@ -6,7 +6,7 @@ const rooms = {
         name: '시작의 방',
         description: '당신은 작고 어두운 방에 있습니다.',
         exits: { 북: 'field' },
-        items: [],
+        items: [{ name: '작은 체력포션', id: 'small_potion' }],
         npcs: [],
         monsters: []
     },
@@ -14,7 +14,7 @@ const rooms = {
         name: '초원',
         description: '넓은 초원이 펼쳐져 있습니다.',
         exits: { 남: 'start' },
-        items: [],
+        items: [{ name: '마나 포션', id: 'mana_potion' }],
         npcs: [],
         monsters: [{ name: '고블린', hp: 10 }]
     }
@@ -33,4 +33,16 @@ export function movePlayer(dir) {
     }
     gameState.position = dest;
     logMessage(`${rooms[dest].name}으로 이동했습니다.`);
+}
+
+export function pickupItem(itemName) {
+    const room = getCurrentRoom();
+    const idx = room.items.findIndex(i => i.name === itemName);
+    if (idx === -1) {
+        logMessage('그런 아이템이 없습니다.');
+        return;
+    }
+    const [item] = room.items.splice(idx, 1);
+    gameState.inventory.push(item);
+    logMessage(`${item.name}을 획득했습니다.`);
 }

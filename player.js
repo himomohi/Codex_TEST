@@ -6,7 +6,8 @@ export const gameState = {
     mp: 10,
     maxMp: 10,
     gold: 0,
-    position: 'start'
+    position: 'start',
+    inventory: []
 };
 
 export function initGame() {
