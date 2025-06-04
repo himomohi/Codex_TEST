@@ -16,7 +16,8 @@ export function updateStatus(state) {
         status.textContent = '';
         return;
     }
-    status.textContent = `${state.name} Lv${state.level} HP:${state.hp}/${state.maxHp} MP:${state.mp}/${state.maxMp} 골드:${state.gold}`;
+    const inv = state.inventory.map(i => i.name).join(', ') || '없음';
+    status.textContent = `${state.name} Lv${state.level} HP:${state.hp}/${state.maxHp} MP:${state.mp}/${state.maxMp} 골드:${state.gold} | 인벤토리: ${inv}`;
 }
 
 export function updateNavigation(room) {
