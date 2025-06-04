@@ -26,3 +26,14 @@ body {
 #quick-attack-button {
     margin-top: 10px;
 }
+
+#combat-ui {
+    margin-top: 10px;
+    border: 1px solid #333;
+    padding: 5px;
+}
+
+#player-hp-bar,
+#monster-hp-bar {
+    margin: 2px 0;
+}
