@@ -26,6 +26,7 @@ function handleInput(text) {
     logMessage(`> ${text}`);
     parseCommand(text.trim());
     input.value = '';
+    input.focus();
     updateUI();
 }
 
@@ -42,5 +43,7 @@ window.addEventListener('load', () => {
     initUI();
     setupEventListeners();
     updateUI();
+    const input = document.getElementById('chat-input');
+    input.focus();
     logMessage('게임을 시작합니다. 명령을 입력하세요.');
 });

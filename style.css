@@ -1,39 +1,127 @@
+:root {
+    --bg-color: #0f0f0f;
+    --panel-bg: #161616;
+    --accent: #10b981;
+    --text-color: #e5e5e5;
+    --border-color: #333;
+    --transition-speed: 0.2s;
+}
+
 body {
-    background-color: #111;
-    color: #eee;
-    font-family: monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Pretendard", "Apple SD Gothic Neo", sans-serif;
     margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 }
 #game-container {
+    width: 100%;
     max-width: 800px;
-    margin: 0 auto;
-    padding: 10px;
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 #log-window {
     height: 400px;
     overflow-y: auto;
-    border: 1px solid #333;
-    padding: 5px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
     background-color: #000;
+    border-radius: 4px;
+    font-family: "Courier New", monospace;
+    margin-bottom: 10px;
+}
+#status-display {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+#navigation-info {
+    margin-bottom: 10px;
 }
 #input-area {
     display: flex;
-    margin-top: 5px;
+    margin-top: 10px;
+    gap: 8px;
 }
 #chat-input {
     flex: 1;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px;
+    border-radius: 4px;
+    transition: border-color var(--transition-speed);
 }
+
+#chat-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+#send-button,
 #quick-attack-button {
-    margin-top: 10px;
+    background-color: var(--accent);
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+#send-button:hover,
+#quick-attack-button:hover {
+    background-color: #0ea272;
+}
+
+#quick-attack-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10;
+}
+
+#quick-attack-button.show {
+    animation: pulse 1s infinite, fadeIn var(--transition-speed) ease-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.log-entry {
+    animation: fadeIn var(--transition-speed) ease-out;
 }
 
 #combat-ui {
     margin-top: 10px;
-    border: 1px solid #333;
-    padding: 5px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #000;
 }
 
 #player-hp-bar,
 #monster-hp-bar {
+    margin: 4px 0;
+}
+
+#navigation-info span {
+    display: block;
     margin: 2px 0;
 }
