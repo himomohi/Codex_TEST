@@ -20,11 +20,19 @@
         <div id="player-hp-bar"></div>
         <div id="monster-hp-bar"></div>
     </div>
-    <div id="input-area">
-        <input type="text" id="chat-input" autocomplete="off" placeholder="명령을 입력..." aria-label="명령 입력" />
-        <button id="send-button">전송</button>
+    <div id="control-panel">
+        <div id="move-buttons">
+            <button data-dir="북" aria-label="북쪽 이동">북</button>
+            <button data-dir="남" aria-label="남쪽 이동">남</button>
+            <button data-dir="서" aria-label="서쪽 이동">서</button>
+            <button data-dir="동" aria-label="동쪽 이동">동</button>
+        </div>
+        <button id="inspect-button">주변</button>
+        <button id="toggle-map-button">지도</button>
+        <button id="attack-button" style="display:none;">공격</button>
     </div>
-    <button id="quick-attack-button" style="display:none;" aria-label="빠른 공격">빠른 공격!</button>
+    <div id="item-buttons"></div>
+    <div id="inventory-buttons"></div>
 </div>
 <div id="map-display" style="display:none;">
     <pre id="map-grid"></pre>
