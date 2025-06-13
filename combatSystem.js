@@ -1,4 +1,4 @@
-import { gameState } from './player.js';
+import { gameState, gainExp, addGold } from './player.js';
 import { logMessage } from './uiManager.js';
 import { getCurrentRoom } from './mapManager.js';
 
@@ -13,6 +13,8 @@ export function attack() {
     logMessage(`당신은 ${monster.name}을 공격했습니다. 남은 HP: ${monster.hp}`);
     if (monster.hp <= 0) {
         logMessage(`${monster.name}을 처치했습니다!`);
+        gainExp(monster.exp || 0);
+        addGold(monster.gold || 0);
         room.monsters.shift();
     }
 }
