@@ -34,18 +34,17 @@ export function updateNavigation(room) {
 
 export function updateCombatUI(room) {
     const attackBtn = document.getElementById('attack-button');
-    const combatUI = document.getElementById('combat-ui');
+    const combatModal = document.getElementById('combat-modal');
     if (room && room.monsters.length) {
         const monster = room.monsters[0];
-        combatUI.style.display = 'block';
-        attackBtn.disabled = false;
-        attackBtn.classList.add('show');
+        combatModal.style.display = 'flex';
+        attackBtn.style.display = 'none';
         document.getElementById('player-hp-bar').textContent = `플레이어 HP: ${gameState.hp}/${gameState.maxHp}`;
         document.getElementById('monster-hp-bar').textContent = `${monster.name} HP: ${monster.hp}`;
     } else {
-        combatUI.style.display = 'none';
+        combatModal.style.display = 'none';
+        attackBtn.style.display = '';
         attackBtn.disabled = true;
-        attackBtn.classList.remove('show');
     }
 }
 

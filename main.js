@@ -28,6 +28,15 @@ function setupEventListeners() {
         parseCommand('공격');
         updateUI();
     });
+
+    const modalAtkBtn = document.getElementById('combat-attack-button');
+    if (modalAtkBtn) {
+        modalAtkBtn.addEventListener('click', () => {
+            logMessage('> 공격');
+            parseCommand('공격');
+            updateUI();
+        });
+    }
 }
 
 function bindDynamicButtons() {

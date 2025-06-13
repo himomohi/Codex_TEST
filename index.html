@@ -16,10 +16,6 @@
         <span id="room-monsters"></span>
     </div>
     <div id="log-window" aria-live="polite"></div>
-    <div id="combat-ui" style="display:none;">
-        <div id="player-hp-bar"></div>
-        <div id="monster-hp-bar"></div>
-    </div>
     <div id="control-panel">
         <div id="move-buttons">
             <button data-dir="북" aria-label="북쪽 이동">북</button>
@@ -30,6 +26,15 @@
     </div>
     <div id="item-buttons"></div>
     <div id="inventory-buttons"></div>
+    <div id="combat-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div id="combat-ui">
+                <div id="player-hp-bar"></div>
+                <div id="monster-hp-bar"></div>
+                <button id="combat-attack-button">공격</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="action-bar">
     <button id="inspect-button">주변</button>
