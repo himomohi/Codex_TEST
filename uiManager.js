@@ -38,13 +38,13 @@ export function updateCombatUI(room) {
     if (room && room.monsters.length) {
         const monster = room.monsters[0];
         combatUI.style.display = 'block';
-        attackBtn.style.display = 'block';
+        attackBtn.disabled = false;
         attackBtn.classList.add('show');
         document.getElementById('player-hp-bar').textContent = `플레이어 HP: ${gameState.hp}/${gameState.maxHp}`;
         document.getElementById('monster-hp-bar').textContent = `${monster.name} HP: ${monster.hp}`;
     } else {
         combatUI.style.display = 'none';
-        attackBtn.style.display = 'none';
+        attackBtn.disabled = true;
         attackBtn.classList.remove('show');
     }
 }

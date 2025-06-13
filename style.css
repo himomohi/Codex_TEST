@@ -69,14 +69,25 @@ body {
 #inventory-buttons button:hover {
     background-color: #0ea272;
 }
-#attack-button {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 10;
-}
 #attack-button.show {
     animation: pulse 1s infinite, fadeIn var(--transition-speed) ease-out;
+}
+
+#action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--panel-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+#action-bar button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 @keyframes pulse {
