@@ -7,7 +7,7 @@
 </head>
 <body>
 <div id="game-container">
-    <div id="status-display"></div>
+    <header id="status-display"></header>
     <div id="navigation-info">
         <span id="current-room-name"></span>
         <span id="available-exits"></span>
@@ -15,16 +15,16 @@
         <span id="room-npcs"></span>
         <span id="room-monsters"></span>
     </div>
-    <div id="log-window"></div>
+    <div id="log-window" aria-live="polite"></div>
     <div id="combat-ui" style="display:none;">
         <div id="player-hp-bar"></div>
         <div id="monster-hp-bar"></div>
     </div>
     <div id="input-area">
-        <input type="text" id="chat-input" autocomplete="off" />
+        <input type="text" id="chat-input" autocomplete="off" placeholder="명령을 입력..." aria-label="명령 입력" />
         <button id="send-button">전송</button>
     </div>
-    <button id="quick-attack-button" style="display:none;">빠른 공격!</button>
+    <button id="quick-attack-button" style="display:none;" aria-label="빠른 공격">빠른 공격!</button>
 </div>
 <div id="map-display" style="display:none;">
     <pre id="map-grid"></pre>
