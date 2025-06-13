@@ -47,27 +47,15 @@ body {
 #navigation-info {
     margin-bottom: 10px;
 }
-#input-area {
+#control-panel {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 10px;
     gap: 8px;
 }
-#chat-input {
-    flex: 1;
-    background-color: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    padding: 8px;
-    border-radius: 4px;
-    transition: border-color var(--transition-speed);
-}
-
-#chat-input:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-#send-button,
-#quick-attack-button {
+#control-panel button,
+#item-buttons button,
+#inventory-buttons button {
     background-color: var(--accent);
     color: #000;
     border: none;
@@ -76,20 +64,18 @@ body {
     cursor: pointer;
     transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
-
-#send-button:hover,
-#quick-attack-button:hover {
+#control-panel button:hover,
+#item-buttons button:hover,
+#inventory-buttons button:hover {
     background-color: #0ea272;
 }
-
-#quick-attack-button {
+#attack-button {
     position: fixed;
     bottom: 24px;
     right: 24px;
     z-index: 10;
 }
-
-#quick-attack-button.show {
+#attack-button.show {
     animation: pulse 1s infinite, fadeIn var(--transition-speed) ease-out;
 }
 
