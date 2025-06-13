@@ -1,7 +1,7 @@
-import { initUI, logMessage, updateStatus, updateNavigation, updateCombatUI } from './uiManager.js';
+import { initUI, logMessage, updateStatus, updateNavigation, updateCombatUI, updateMapDisplay } from './uiManager.js';
 import { parseCommand } from './commandParser.js';
 import { gameState, initGame } from './player.js';
-import { getCurrentRoom } from './mapManager.js';
+import { getCurrentRoom, getMapGrid } from './mapManager.js';
 
 function setupEventListeners() {
     const input = document.getElementById('chat-input');
@@ -34,6 +34,7 @@ function updateUI() {
     const room = getCurrentRoom();
     updateNavigation(room);
     updateCombatUI(room);
+    updateMapDisplay(getMapGrid());
 }
 
 window.addEventListener('load', () => {

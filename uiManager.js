@@ -19,7 +19,7 @@ export function updateStatus(state) {
         return;
     }
     const inv = state.inventory.map(i => i.name).join(', ') || '없음';
-    status.textContent = `${state.name} Lv${state.level} HP:${state.hp}/${state.maxHp} MP:${state.mp}/${state.maxMp} 골드:${state.gold} | 인벤토리: ${inv}`;
+    status.textContent = `${state.name} Lv${state.level} EXP:${state.exp}/${state.nextLevelExp} HP:${state.hp}/${state.maxHp} MP:${state.mp}/${state.maxMp} 골드:${state.gold} | 인벤토리: ${inv}`;
 }
 
 export function updateNavigation(room) {
@@ -44,4 +44,15 @@ export function updateCombatUI(room) {
         combatUI.style.display = 'none';
         quickBtn.style.display = 'none';
     }
+}
+
+export function updateMapDisplay(grid) {
+    const mapGrid = document.getElementById('map-grid');
+    if (!grid) return;
+    mapGrid.textContent = grid.join('\n');
+}
+
+export function toggleMap() {
+    const mapDiv = document.getElementById('map-display');
+    mapDiv.style.display = mapDiv.style.display === 'block' ? 'none' : 'block';
 }
