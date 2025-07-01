@@ -45,6 +45,7 @@ function bindDynamicButtons() {
     const room = getCurrentRoom();
     room.items.forEach(item => {
         const b = document.createElement('button');
+        b.className = 'btn';
         b.textContent = `줍기 ${item.name}`;
         b.addEventListener('click', () => {
             logMessage(`> 줍기 ${item.name}`);
@@ -58,6 +59,7 @@ function bindDynamicButtons() {
     invContainer.innerHTML = '';
     gameState.inventory.forEach(item => {
         const b = document.createElement('button');
+        b.className = 'btn';
         b.textContent = `사용 ${item.name}`;
         b.addEventListener('click', () => {
             logMessage(`> 사용 ${item.name}`);
