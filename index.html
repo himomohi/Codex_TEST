@@ -5,46 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>환상의 세계 MUD</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
 </head>
 <body>
-<div id="game-container">
-    <header id="status-display"></header>
-    <div id="navigation-info">
-        <span id="current-room-name"></span>
-        <span id="available-exits"></span>
-        <span id="room-items"></span>
-        <span id="room-npcs"></span>
-        <span id="room-monsters"></span>
-    </div>
-    <div id="log-window" aria-live="polite"></div>
-    <div id="control-panel">
-        <div id="move-buttons">
-            <button class="btn" data-dir="북" aria-label="북쪽 이동">북</button>
-            <button class="btn" data-dir="남" aria-label="남쪽 이동">남</button>
-            <button class="btn" data-dir="서" aria-label="서쪽 이동">서</button>
-            <button class="btn" data-dir="동" aria-label="동쪽 이동">동</button>
+    <div id="game-container">
+        <!-- Main Game Area -->
+        <div class="game-main">
+            <!-- Status Display -->
+            <header id="status-display">
+                <div class="status-content">
+                    <div class="status-item">
+                        <span class="status-label">체력:</span>
+                        <span id="player-hp" class="status-value">100/100</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">레벨:</span>
+                        <span id="player-level" class="status-value">1</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">경험치:</span>
+                        <span id="player-exp" class="status-value">0/100</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Navigation Info -->
+            <div id="navigation-info">
+                <div class="room-info">
+                    <h3 id="current-room-name" class="room-title">시작의 마을</h3>
+                    <div class="room-details">
+                        <div class="detail-section">
+                            <span class="detail-label">출구:</span>
+                            <span id="available-exits" class="detail-value">북, 남, 서, 동</span>
+                        </div>
+                        <div class="detail-section">
+                            <span class="detail-label">아이템:</span>
+                            <span id="room-items" class="detail-value">없음</span>
+                        </div>
+                        <div class="detail-section">
+                            <span class="detail-label">NPC:</span>
+                            <span id="room-npcs" class="detail-value">없음</span>
+                        </div>
+                        <div class="detail-section">
+                            <span class="detail-label">몬스터:</span>
+                            <span id="room-monsters" class="detail-value">없음</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Window -->
+            <div class="log-container">
+                <div class="log-header">
+                    <h3>게임 로그</h3>
+                    <button id="clear-log" class="btn btn-small" title="로그 지우기">🗑️</button>
+                </div>
+                <div id="log-window" aria-live="polite"></div>
+            </div>
+
+            <!-- Control Panel -->
+            <div id="control-panel">
+                <div class="control-section">
+                    <h4 class="section-title">이동</h4>
+                    <div id="move-buttons" class="button-grid">
+                        <button class="btn btn-direction" data-dir="북" aria-label="북쪽 이동">
+                            <span class="direction-icon">⬆️</span>
+                            <span class="direction-text">북</span>
+                        </button>
+                        <button class="btn btn-direction" data-dir="남" aria-label="남쪽 이동">
+                            <span class="direction-icon">⬇️</span>
+                            <span class="direction-text">남</span>
+                        </button>
+                        <button class="btn btn-direction" data-dir="서" aria-label="서쪽 이동">
+                            <span class="direction-icon">⬅️</span>
+                            <span class="direction-text">서</span>
+                        </button>
+                        <button class="btn btn-direction" data-dir="동" aria-label="동쪽 이동">
+                            <span class="direction-icon">➡️</span>
+                            <span class="direction-text">동</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Buttons -->
+            <div id="item-buttons" class="item-section">
+                <h4 class="section-title">방 아이템</h4>
+                <div class="button-container"></div>
+            </div>
+
+            <!-- Inventory Buttons -->
+            <div id="inventory-buttons" class="inventory-section">
+                <h4 class="section-title">인벤토리</h4>
+                <div class="button-container"></div>
+            </div>
         </div>
-    </div>
-    <div id="item-buttons"></div>
-    <div id="inventory-buttons"></div>
-    <div id="combat-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <div id="combat-ui">
-                <div id="player-hp-bar"></div>
-                <div id="monster-hp-bar"></div>
-                <button id="combat-attack-button" class="btn">공격</button>
+
+        <!-- Sidebar -->
+        <div class="game-sidebar">
+            <!-- Quick Stats -->
+            <div class="sidebar-card">
+                <h3 class="card-title">플레이어 정보</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">공격력</span>
+                        <span id="player-attack" class="stat-value">10</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">방어력</span>
+                        <span id="player-defense" class="stat-value">5</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">골드</span>
+                        <span id="player-gold" class="stat-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Map -->
+            <div class="sidebar-card">
+                <h3 class="card-title">미니맵</h3>
+                <div id="mini-map" class="mini-map">
+                    <div class="map-placeholder">지도를 열어보세요</div>
+                </div>
+            </div>
+
+            <!-- Recent Actions -->
+            <div class="sidebar-card">
+                <h3 class="card-title">최근 액션</h3>
+                <div id="recent-actions" class="recent-actions">
+                    <div class="action-item">게임 시작</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="action-bar">
-    <button id="inspect-button" class="btn">주변</button>
-    <button id="toggle-map-button" class="btn">지도</button>
-    <button id="attack-button" class="btn" disabled>공격</button>
-</div>
-<div id="map-display" style="display:none;">
-    <pre id="map-grid"></pre>
-</div>
-<script type="module" src="main.js"></script>
+
+    <!-- Action Bar -->
+    <div id="action-bar">
+        <div class="action-group">
+            <button id="inspect-button" class="btn btn-action">
+                <span class="action-icon">🔍</span>
+                <span class="action-text">주변</span>
+            </button>
+            <button id="toggle-map-button" class="btn btn-action">
+                <span class="action-icon">🗺️</span>
+                <span class="action-text">지도</span>
+            </button>
+        </div>
+        <div class="action-group">
+            <button id="attack-button" class="btn btn-action btn-danger" disabled>
+                <span class="action-icon">⚔️</span>
+                <span class="action-text">공격</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Combat Modal -->
+    <div id="combat-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>전투</h3>
+                <button class="btn btn-close" id="close-combat">✕</button>
+            </div>
+            <div id="combat-ui">
+                <div class="combat-participants">
+                    <div class="participant player">
+                        <div class="participant-info">
+                            <span class="participant-name">플레이어</span>
+                            <div class="hp-bar-container">
+                                <div id="player-hp-bar" class="hp-bar">
+                                    <div class="hp-fill"></div>
+                                </div>
+                                <span class="hp-text">100/100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="participant monster">
+                        <div class="participant-info">
+                            <span class="participant-name">몬스터</span>
+                            <div class="hp-bar-container">
+                                <div id="monster-hp-bar" class="hp-bar">
+                                    <div class="hp-fill"></div>
+                                </div>
+                                <span class="hp-text">100/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="combat-actions">
+                    <button id="combat-attack-button" class="btn btn-combat">공격</button>
+                    <button id="combat-flee-button" class="btn btn-combat btn-secondary">도망</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Display -->
+    <div id="map-display" class="modal" style="display:none;">
+        <div class="modal-content map-modal">
+            <div class="modal-header">
+                <h3>월드 맵</h3>
+                <button class="btn btn-close" id="close-map">✕</button>
+            </div>
+            <div class="map-container">
+                <pre id="map-grid"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display:none;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">로딩 중...</div>
+    </div>
+
+    <script type="module" src="main.js"></script>
 </body>
 </html>
