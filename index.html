@@ -4,219 +4,332 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>환상의 세계 MUD</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'game-dark': '#0a0a0f',
+                        'game-card': '#1a1a2e',
+                        'game-accent': '#00d4ff',
+                        'game-danger': '#ff6b6b',
+                        'game-success': '#51cf66',
+                        'game-warning': '#ffd43b'
+                    },
+                    fontFamily: {
+                        'game': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
 </head>
-<body>
-    <div id="game-container">
-        <!-- Main Game Area -->
-        <div class="game-main">
-            <!-- Status Display -->
-            <header id="status-display">
-                <div class="status-content">
-                    <div class="status-item">
-                        <span class="status-label">체력:</span>
-                        <span id="player-hp" class="status-value">100/100</span>
+<body class="bg-gradient-to-br from-game-dark to-gray-900 text-white font-game min-h-screen overflow-hidden">
+    <!-- Main Game Interface -->
+    <div class="flex h-screen">
+        <!-- Left Panel - Character & Status -->
+        <div class="w-80 bg-game-card/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4">
+            <!-- Character Status -->
+            <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
+                <h3 class="text-lg font-bold text-game-accent mb-3">캐릭터 정보</h3>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">레벨</span>
+                        <span id="player-level" class="text-white font-bold">1</span>
                     </div>
-                    <div class="status-item">
-                        <span class="status-label">레벨:</span>
-                        <span id="player-level" class="status-value">1</span>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">체력</span>
+                        <span id="player-hp" class="text-white font-bold">100/100</span>
                     </div>
-                    <div class="status-item">
-                        <span class="status-label">경험치:</span>
-                        <span id="player-exp" class="status-value">0/100</span>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">경험치</span>
+                        <span id="player-exp" class="text-white font-bold">0/100</span>
                     </div>
-                </div>
-            </header>
-
-            <!-- Navigation Info -->
-            <div id="navigation-info">
-                <div class="room-info">
-                    <h3 id="current-room-name" class="room-title">시작의 마을</h3>
-                    <div class="room-details">
-                        <div class="detail-section">
-                            <span class="detail-label">출구:</span>
-                            <span id="available-exits" class="detail-value">북, 남, 서, 동</span>
-                        </div>
-                        <div class="detail-section">
-                            <span class="detail-label">아이템:</span>
-                            <span id="room-items" class="detail-value">없음</span>
-                        </div>
-                        <div class="detail-section">
-                            <span class="detail-label">NPC:</span>
-                            <span id="room-npcs" class="detail-value">없음</span>
-                        </div>
-                        <div class="detail-section">
-                            <span class="detail-label">몬스터:</span>
-                            <span id="room-monsters" class="detail-value">없음</span>
-                        </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">공격력</span>
+                        <span id="player-attack" class="text-white font-bold">10</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">방어력</span>
+                        <span id="player-defense" class="text-white font-bold">5</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-300">골드</span>
+                        <span id="player-gold" class="text-game-warning font-bold">0</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Log Window -->
-            <div class="log-container">
-                <div class="log-header">
-                    <h3>게임 로그</h3>
-                    <button id="clear-log" class="btn btn-small" title="로그 지우기">🗑️</button>
-                </div>
-                <div id="log-window" aria-live="polite"></div>
-            </div>
-
-            <!-- Control Panel -->
-            <div id="control-panel">
-                <div class="control-section">
-                    <h4 class="section-title">이동</h4>
-                    <div id="move-buttons" class="button-grid">
-                        <button class="btn btn-direction" data-dir="북" aria-label="북쪽 이동">
-                            <span class="direction-icon">⬆️</span>
-                            <span class="direction-text">북</span>
-                        </button>
-                        <button class="btn btn-direction" data-dir="남" aria-label="남쪽 이동">
-                            <span class="direction-icon">⬇️</span>
-                            <span class="direction-text">남</span>
-                        </button>
-                        <button class="btn btn-direction" data-dir="서" aria-label="서쪽 이동">
-                            <span class="direction-icon">⬅️</span>
-                            <span class="direction-text">서</span>
-                        </button>
-                        <button class="btn btn-direction" data-dir="동" aria-label="동쪽 이동">
-                            <span class="direction-icon">➡️</span>
-                            <span class="direction-text">동</span>
-                        </button>
+            <!-- Current Location -->
+            <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
+                <h3 class="text-lg font-bold text-game-accent mb-3">현재 위치</h3>
+                <div class="space-y-2">
+                    <div>
+                        <span class="text-gray-300">장소:</span>
+                        <span id="current-room-name" class="text-white font-bold block">시작의 마을</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-300">출구:</span>
+                        <span id="available-exits" class="text-white block">북, 남, 서, 동</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-300">아이템:</span>
+                        <span id="room-items" class="text-white block">없음</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-300">NPC:</span>
+                        <span id="room-npcs" class="text-white block">없음</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-300">몬스터:</span>
+                        <span id="room-monsters" class="text-white block">없음</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Item Buttons -->
-            <div id="item-buttons" class="item-section">
-                <h4 class="section-title">방 아이템</h4>
-                <div class="button-container"></div>
-            </div>
-
-            <!-- Inventory Buttons -->
-            <div id="inventory-buttons" class="inventory-section">
-                <h4 class="section-title">인벤토리</h4>
-                <div class="button-container"></div>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="game-sidebar">
-            <!-- Quick Stats -->
-            <div class="sidebar-card">
-                <h3 class="card-title">플레이어 정보</h3>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-label">공격력</span>
-                        <span id="player-attack" class="stat-value">10</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">방어력</span>
-                        <span id="player-defense" class="stat-value">5</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">골드</span>
-                        <span id="player-gold" class="stat-value">0</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mini Map -->
-            <div class="sidebar-card">
-                <h3 class="card-title">미니맵</h3>
-                <div id="mini-map" class="mini-map">
-                    <div class="map-placeholder">지도를 열어보세요</div>
-                </div>
-            </div>
-
-            <!-- Recent Actions -->
-            <div class="sidebar-card">
-                <h3 class="card-title">최근 액션</h3>
-                <div id="recent-actions" class="recent-actions">
-                    <div class="action-item">게임 시작</div>
+            <!-- Quick Actions -->
+            <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
+                <h3 class="text-lg font-bold text-game-accent mb-3">빠른 액션</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="inspect-button" class="bg-gray-700 hover:bg-gray-600 rounded p-2 text-sm transition-colors">
+                        🔍 주변
+                    </button>
+                    <button id="toggle-map-button" class="bg-gray-700 hover:bg-gray-600 rounded p-2 text-sm transition-colors">
+                        🗺️ 지도
+                    </button>
+                    <button id="attack-button" class="bg-game-danger hover:bg-red-600 rounded p-2 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        ⚔️ 공격
+                    </button>
+                    <button id="inventory-button" class="bg-gray-700 hover:bg-gray-600 rounded p-2 text-sm transition-colors">
+                        🎒 인벤토리
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Action Bar -->
-    <div id="action-bar">
-        <div class="action-group">
-            <button id="inspect-button" class="btn btn-action">
-                <span class="action-icon">🔍</span>
-                <span class="action-text">주변</span>
-            </button>
-            <button id="toggle-map-button" class="btn btn-action">
-                <span class="action-icon">🗺️</span>
-                <span class="action-text">지도</span>
-            </button>
-        </div>
-        <div class="action-group">
-            <button id="attack-button" class="btn btn-action btn-danger" disabled>
-                <span class="action-icon">⚔️</span>
-                <span class="action-text">공격</span>
-            </button>
+        <!-- Center Panel - Main Game Area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Bar -->
+            <div class="bg-black/40 backdrop-blur-sm border-b border-gray-700 p-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-game-accent">환상의 세계 MUD</h1>
+                    <div class="flex space-x-2">
+                        <button id="settings-button" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                            ⚙️ 설정
+                        </button>
+                        <button id="help-button" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                            ❓ 도움말
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex-1 flex">
+                <!-- Game Log -->
+                <div class="flex-1 p-4">
+                    <div class="bg-black/40 rounded-lg border border-gray-600 h-full flex flex-col">
+                        <div class="flex justify-between items-center p-4 border-b border-gray-600">
+                            <h3 class="text-lg font-bold text-game-accent">게임 로그</h3>
+                            <button id="clear-log" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                                🗑️ 지우기
+                            </button>
+                        </div>
+                        <div id="log-window" class="flex-1 p-4 overflow-y-auto space-y-2 text-sm">
+                            <div class="text-gray-400">게임이 시작되었습니다...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Movement & Items -->
+                <div class="w-80 bg-game-card/80 backdrop-blur-sm border-l border-gray-700 p-4 space-y-4">
+                    <!-- Movement Controls -->
+                    <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
+                        <h3 class="text-lg font-bold text-game-accent mb-3">이동</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors" data-dir="북">
+                                <div class="text-center">
+                                    <div class="text-2xl">⬆️</div>
+                                    <div class="text-sm">북</div>
+                                </div>
+                            </button>
+                            <button class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors" data-dir="남">
+                                <div class="text-center">
+                                    <div class="text-2xl">⬇️</div>
+                                    <div class="text-sm">남</div>
+                                </div>
+                            </button>
+                            <button class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors" data-dir="서">
+                                <div class="text-center">
+                                    <div class="text-2xl">⬅️</div>
+                                    <div class="text-sm">서</div>
+                                </div>
+                            </button>
+                            <button class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors" data-dir="동">
+                                <div class="text-center">
+                                    <div class="text-2xl">➡️</div>
+                                    <div class="text-sm">동</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Room Items -->
+                    <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
+                        <h3 class="text-lg font-bold text-game-accent mb-3">방 아이템</h3>
+                        <div id="item-buttons" class="space-y-2">
+                            <div class="text-gray-400 text-sm">아이템이 없습니다</div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory -->
+                    <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
+                        <h3 class="text-lg font-bold text-game-accent mb-3">인벤토리</h3>
+                        <div id="inventory-buttons" class="space-y-2">
+                            <div class="text-gray-400 text-sm">비어있습니다</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Combat Modal -->
-    <div id="combat-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>전투</h3>
-                <button class="btn btn-close" id="close-combat">✕</button>
+    <div id="combat-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-game-accent">전투</h3>
+                <button id="close-combat" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                    ✕
+                </button>
             </div>
-            <div id="combat-ui">
-                <div class="combat-participants">
-                    <div class="participant player">
-                        <div class="participant-info">
-                            <span class="participant-name">플레이어</span>
-                            <div class="hp-bar-container">
-                                <div id="player-hp-bar" class="hp-bar">
-                                    <div class="hp-fill"></div>
-                                </div>
-                                <span class="hp-text">100/100</span>
-                            </div>
+            <div id="combat-ui" class="space-y-4">
+                <div class="space-y-3">
+                    <div class="bg-black/40 rounded p-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-white">플레이어</span>
+                            <span id="player-hp-bar-text" class="text-sm text-gray-300">100/100</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div id="player-hp-bar" class="bg-game-success h-2 rounded-full transition-all duration-300" style="width: 100%"></div>
                         </div>
                     </div>
-                    <div class="participant monster">
-                        <div class="participant-info">
-                            <span class="participant-name">몬스터</span>
-                            <div class="hp-bar-container">
-                                <div id="monster-hp-bar" class="hp-bar">
-                                    <div class="hp-fill"></div>
-                                </div>
-                                <span class="hp-text">100/100</span>
-                            </div>
+                    <div class="bg-black/40 rounded p-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-white">몬스터</span>
+                            <span id="monster-hp-bar-text" class="text-sm text-gray-300">100/100</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div id="monster-hp-bar" class="bg-game-danger h-2 rounded-full transition-all duration-300" style="width: 100%"></div>
                         </div>
                     </div>
                 </div>
-                <div class="combat-actions">
-                    <button id="combat-attack-button" class="btn btn-combat">공격</button>
-                    <button id="combat-flee-button" class="btn btn-combat btn-secondary">도망</button>
+                <div class="flex space-x-2">
+                    <button id="combat-attack-button" class="flex-1 bg-game-danger hover:bg-red-600 rounded p-3 transition-colors font-bold">
+                        공격
+                    </button>
+                    <button id="combat-flee-button" class="flex-1 bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors">
+                        도망
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Map Display -->
-    <div id="map-display" class="modal" style="display:none;">
-        <div class="modal-content map-modal">
-            <div class="modal-header">
-                <h3>월드 맵</h3>
-                <button class="btn btn-close" id="close-map">✕</button>
+    <!-- Map Modal -->
+    <div id="map-display" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-4/5 h-4/5 max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-game-accent">월드 맵</h3>
+                <button id="close-map" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                    ✕
+                </button>
             </div>
-            <div class="map-container">
-                <pre id="map-grid"></pre>
+            <div class="bg-black/40 rounded p-4 h-full overflow-auto">
+                <pre id="map-grid" class="text-xs font-mono text-white"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div id="inventory-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-game-accent">인벤토리</h3>
+                <button id="close-inventory" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                    ✕
+                </button>
+            </div>
+            <div id="inventory-content" class="space-y-2">
+                <div class="text-gray-400 text-center py-4">인벤토리가 비어있습니다</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-game-accent">설정</h3>
+                <button id="close-settings" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                    ✕
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">사운드</label>
+                    <input type="range" min="0" max="100" value="50" class="w-full">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">효과음</label>
+                    <input type="range" min="0" max="100" value="30" class="w-full">
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="auto-save" class="mr-2">
+                    <label for="auto-save" class="text-sm text-gray-300">자동 저장</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-game-accent">도움말</h3>
+                <button id="close-help" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
+                    ✕
+                </button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <strong class="text-game-accent">이동:</strong> 방향 버튼 또는 WASD 키
+                </div>
+                <div>
+                    <strong class="text-game-accent">공격:</strong> 스페이스바 또는 공격 버튼
+                </div>
+                <div>
+                    <strong class="text-game-accent">주변 탐색:</strong> 주변 버튼
+                </div>
+                <div>
+                    <strong class="text-game-accent">지도:</strong> 지도 버튼 또는 M 키
+                </div>
+                <div>
+                    <strong class="text-game-accent">인벤토리:</strong> 인벤토리 버튼 또는 I 키
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay" style="display:none;">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">로딩 중...</div>
+    <div id="loading-overlay" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-game-accent mx-auto mb-4"></div>
+            <div class="text-white text-lg">로딩 중...</div>
+        </div>
     </div>
 
     <script type="module" src="main.js"></script>
