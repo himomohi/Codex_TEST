@@ -8,7 +8,7 @@ export function logMessage(msg) {
     const log = document.getElementById('log-window');
     const p = document.createElement('div');
     p.textContent = msg;
-    p.className = 'log-entry';
+    p.className = 'text-sm mb-1';
     log.appendChild(p);
     log.scrollTop = log.scrollHeight;
 }
@@ -88,13 +88,14 @@ export function updateCombatUI(room) {
         
         // Show combat modal
         if (combatModal) {
-            combatModal.style.display = 'flex';
+            combatModal.classList.remove('hidden');
+            combatModal.classList.add('flex');
         }
         
         // Enable attack button
         if (attackBtn) {
             attackBtn.disabled = false;
-            attackBtn.classList.add('show');
+            attackBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
         
         // Update HP bars
@@ -102,8 +103,8 @@ export function updateCombatUI(room) {
         updateHPBar('monster-hp-bar', monster.hp, monster.maxHp);
         
         // Update HP text
-        const playerHpText = document.querySelector('.participant.player .hp-text');
-        const monsterHpText = document.querySelector('.participant.monster .hp-text');
+        const playerHpText = document.getElementById('player-hp-bar-text');
+        const monsterHpText = document.getElementById('monster-hp-bar-text');
         
         if (playerHpText) {
             playerHpText.textContent = `${gameState.hp}/${gameState.maxHp}`;
@@ -113,22 +114,17 @@ export function updateCombatUI(room) {
             monsterHpText.textContent = `${monster.hp}/${monster.maxHp}`;
         }
         
-        // Update monster name
-        const monsterNameEl = document.querySelector('.participant.monster .participant-name');
-        if (monsterNameEl) {
-            monsterNameEl.textContent = monster.name;
-        }
-        
     } else {
         // Hide combat modal
         if (combatModal) {
-            combatModal.style.display = 'none';
+            combatModal.classList.add('hidden');
+            combatModal.classList.remove('flex');
         }
         
         // Disable attack button
         if (attackBtn) {
             attackBtn.disabled = true;
-            attackBtn.classList.remove('show');
+            attackBtn.classList.add('opacity-50', 'cursor-not-allowed');
         }
     }
 }
@@ -137,19 +133,19 @@ function updateHPBar(barId, currentHP, maxHP) {
     const bar = document.getElementById(barId);
     if (!bar) return;
     
-    const fill = bar.querySelector('.hp-fill');
-    if (!fill) return;
-    
     const percentage = Math.max(0, Math.min(100, (currentHP / maxHP) * 100));
-    fill.style.width = `${percentage}%`;
+    bar.style.width = `${percentage}%`;
     
     // Add color coding based on HP percentage
     if (percentage > 60) {
-        fill.style.background = 'linear-gradient(90deg, var(--accent-success), #4ade80)';
+        bar.classList.remove('bg-game-danger', 'bg-game-warning');
+        bar.classList.add('bg-game-success');
     } else if (percentage > 30) {
-        fill.style.background = 'linear-gradient(90deg, var(--accent-warning), #fbbf24)';
+        bar.classList.remove('bg-game-success', 'bg-game-danger');
+        bar.classList.add('bg-game-warning');
     } else {
-        fill.style.background = 'linear-gradient(90deg, var(--accent-danger), #f87171)';
+        bar.classList.remove('bg-game-success', 'bg-game-warning');
+        bar.classList.add('bg-game-danger');
     }
 }
 
@@ -184,8 +180,14 @@ export function toggleMap() {
     const mapDiv = document.getElementById('map-display');
     if (!mapDiv) return;
     
-    const isVisible = mapDiv.style.display === 'flex';
-    mapDiv.style.display = isVisible ? 'none' : 'flex';
+    const isVisible = !mapDiv.classList.contains('hidden');
+    if (isVisible) {
+        mapDiv.classList.add('hidden');
+        mapDiv.classList.remove('flex');
+    } else {
+        mapDiv.classList.remove('hidden');
+        mapDiv.classList.add('flex');
+    }
 }
 
 // Additional UI utility functions
