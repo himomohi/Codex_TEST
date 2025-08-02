@@ -29,9 +29,9 @@
 </head>
 <body class="bg-gradient-to-br from-game-dark to-gray-900 text-white font-game min-h-screen overflow-hidden">
     <!-- Main Game Interface -->
-    <div class="flex h-screen">
+    <div class="flex flex-col md:flex-row h-screen">
         <!-- Left Panel - Character & Status -->
-        <div class="w-80 bg-game-card/80 backdrop-blur-sm border-r border-gray-700 p-4 space-y-4">
+        <div class="w-full md:w-80 bg-game-card/80 backdrop-blur-sm border-b md:border-b-0 md:border-r border-gray-700 p-4 space-y-4 overflow-y-auto h-1/2 md:h-auto">
             <!-- Character Status -->
             <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
                 <h3 class="text-lg font-bold text-game-accent mb-3">캐릭터 정보</h3>
@@ -256,7 +256,7 @@
 
     <!-- Inventory Modal -->
     <div id="inventory-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
-        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-game-accent">인벤토리</h3>
                 <button id="close-inventory" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
@@ -271,7 +271,7 @@
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
-        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-game-accent">설정</h3>
                 <button id="close-settings" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
@@ -297,7 +297,7 @@
 
     <!-- Help Modal -->
     <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
-        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-96 max-w-md">
+        <div class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-game-accent">도움말</h3>
                 <button id="close-help" class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors">
