@@ -88,12 +88,28 @@ class GameState:
         self.equipped_armor: Optional[Item] = None
         self.in_combat = False
         self.current_monster: Optional[Monster] = None
-        
+
         # 게임 데이터 초기화
         self._init_items()
         self._init_monsters()
         self._init_world()
-    
+
+    @property
+    def total_attack(self) -> int:
+        """장착된 무기를 포함한 총 공격력"""
+        base = self.player_attack
+        if self.equipped_weapon:
+            base += self.equipped_weapon.attack
+        return base
+
+    @property
+    def total_defense(self) -> int:
+        """장착된 방어구를 포함한 총 방어력"""
+        base = self.player_defense
+        if self.equipped_armor:
+            base += self.equipped_armor.defense
+        return base
+
     def _init_items(self):
         """아이템 데이터 초기화"""
         self.items_database = {
@@ -190,9 +206,9 @@ class GameState:
             return "전투 중이 아닙니다."
         
         # 플레이어 공격
-        damage = max(1, self.player_attack - self.current_monster.defense)
+        damage = max(1, self.total_attack - self.current_monster.defense)
         self.current_monster.hp -= damage
-        
+
         result = f"당신이 {self.current_monster.name}에게 {damage}의 피해를 입혔습니다!"
         
         # 몬스터가 죽었는지 확인
@@ -214,9 +230,9 @@ class GameState:
             return result
         
         # 몬스터 반격
-        monster_damage = max(1, self.current_monster.attack - self.player_defense)
+        monster_damage = max(1, self.current_monster.attack - self.total_defense)
         self.player_hp -= monster_damage
-        
+
         result += f"\n{self.current_monster.name}이(가) 당신에게 {monster_damage}의 피해를 입혔습니다!"
         
         # 플레이어가 죽었는지 확인
@@ -293,8 +309,8 @@ class CharacterPanel(Static):
             yield Label(f"레벨: {self.game_state.player_level}", id="level-label")
             yield Label(f"체력: {self.game_state.player_hp}/{self.game_state.player_max_hp}", id="hp-label")
             yield Label(f"경험치: {self.game_state.player_exp}/{self.game_state.player_exp_needed}", id="exp-label")
-            yield Label(f"공격력: {self.game_state.player_attack}", id="attack-label")
-            yield Label(f"방어력: {self.game_state.player_defense}", id="defense-label")
+            yield Label(f"공격력: {self.game_state.total_attack}", id="attack-label")
+            yield Label(f"방어력: {self.game_state.total_defense}", id="defense-label")
             yield Label(f"골드: {self.game_state.player_gold}", id="gold-label")
     
     def update_stats(self):
@@ -302,8 +318,8 @@ class CharacterPanel(Static):
         self.query_one("#level-label").update(f"레벨: {self.game_state.player_level}")
         self.query_one("#hp-label").update(f"체력: {self.game_state.player_hp}/{self.game_state.player_max_hp}")
         self.query_one("#exp-label").update(f"경험치: {self.game_state.player_exp}/{self.game_state.player_exp_needed}")
-        self.query_one("#attack-label").update(f"공격력: {self.game_state.player_attack}")
-        self.query_one("#defense-label").update(f"방어력: {self.game_state.player_defense}")
+        self.query_one("#attack-label").update(f"공격력: {self.game_state.total_attack}")
+        self.query_one("#defense-label").update(f"방어력: {self.game_state.total_defense}")
         self.query_one("#gold-label").update(f"골드: {self.game_state.player_gold}")
 
 
