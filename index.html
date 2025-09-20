@@ -31,237 +31,337 @@
     />
   </head>
   <body
-    class="bg-gradient-to-br from-game-dark to-gray-900 text-white font-game min-h-screen"
+    class="bg-gradient-to-br from-game-dark to-gray-900 text-white font-game min-h-screen h-screen overflow-hidden"
   >
-    <!-- Main Game Interface -->
-    <div class="flex flex-col md:flex-row min-h-screen">
-      <!-- Left Panel - Character & Status -->
+    <div
+      class="min-h-screen flex items-center justify-center px-4 sm:px-6 py-6 sm:py-10"
+    >
       <div
-        class="w-full md:w-80 bg-game-card/80 backdrop-blur-sm border-b md:border-b-0 md:border-r border-gray-700 p-4 space-y-4 md:overflow-y-auto md:h-auto"
+        class="relative w-full h-full max-w-4xl bg-game-card/60 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl max-h-[calc(100vh-3rem)] sm:max-h-[calc(100vh-4rem)]"
       >
-        <!-- Character Status -->
-        <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
-          <h3 class="text-lg font-bold text-game-accent mb-3">캐릭터 정보</h3>
-          <div class="space-y-2">
-            <div class="flex justify-between">
-              <span class="text-gray-300">레벨</span>
-              <span id="player-level" class="text-white font-bold">1</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-300">체력</span>
-              <span id="player-hp" class="text-white font-bold">100/100</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-300">경험치</span>
-              <span id="player-exp" class="text-white font-bold">0/100</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-300">공격력</span>
-              <span id="player-attack" class="text-white font-bold">10</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-300">방어력</span>
-              <span id="player-defense" class="text-white font-bold">5</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-300">골드</span>
-              <span id="player-gold" class="text-game-warning font-bold"
-                >0</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Current Location -->
-        <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
-          <h3 class="text-lg font-bold text-game-accent mb-3">현재 위치</h3>
-          <div class="space-y-2">
-            <div>
-              <span class="text-gray-300">장소:</span>
-              <span id="current-room-name" class="text-white font-bold block"
-                >시작의 마을</span
-              >
-            </div>
-            <div>
-              <span class="text-gray-300">출구:</span>
-              <span id="available-exits" class="text-white block"
-                >북, 남, 서, 동</span
-              >
-            </div>
-            <div>
-              <span class="text-gray-300">아이템:</span>
-              <span id="room-items" class="text-white block">없음</span>
-            </div>
-            <div>
-              <span class="text-gray-300">NPC:</span>
-              <span id="room-npcs" class="text-white block">없음</span>
-            </div>
-            <div>
-              <span class="text-gray-300">몬스터:</span>
-              <span id="room-monsters" class="text-white block">없음</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
-          <h3 class="text-lg font-bold text-game-accent mb-3">빠른 액션</h3>
-          <div class="grid grid-cols-2 gap-2">
-            <button
-              id="inspect-button"
-              class="bg-gray-700 hover:bg-gray-600 rounded p-2 text-sm transition-colors"
-            >
-              🔍 주변
-            </button>
-            <button
-              id="toggle-map-button"
-              class="bg-gray-700 hover:bg-gray-600 rounded p-2 text-sm transition-colors"
-            >
-              🗺️ 지도
-            </button>
-            <button
-              id="attack-button"
-              class="bg-game-danger hover:bg-red-600 rounded p-2 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled
-            >
-              ⚔️ 공격
-            </button>
-            <button
-              id="inventory-button"
-              class="bg-gray-700 hover:bg-gray-600 rounded p-2 text-sm transition-colors"
-            >
-              🎒 인벤토리
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Center Panel - Main Game Area -->
-      <div class="flex-1 flex flex-col">
-        <!-- Top Bar -->
-        <div class="bg-black/40 backdrop-blur-sm border-b border-gray-700 p-4">
-          <div
-            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-game-accent/15 pointer-events-none"
+        ></div>
+        <div class="relative z-10 flex flex-col h-full">
+          <header
+            class="px-6 py-3 bg-black/40 border-b border-gray-800 flex items-center justify-between gap-4"
           >
-            <h1 class="text-2xl font-bold text-game-accent">환상의 세계 MUD</h1>
-            <div class="flex gap-2 sm:justify-end">
+            <div>
+              <h1
+                class="text-2xl font-extrabold tracking-wide text-game-accent"
+              >
+                환상의 세계 MUD
+              </h1>
+              <p class="text-xs text-gray-400 mt-1">
+                실시간 텍스트 MMORPG 어드벤처에 오신 것을 환영합니다
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
               <button
                 id="settings-button"
-                class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+                class="bg-gray-700/70 hover:bg-gray-600 rounded-full p-3 transition-colors"
+                aria-label="설정 열기"
               >
-                ⚙️ 설정
+                ⚙️
               </button>
               <button
                 id="help-button"
-                class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+                class="bg-gray-700/70 hover:bg-gray-600 rounded-full p-3 transition-colors"
+                aria-label="도움말 열기"
               >
-                ❓ 도움말
+                ❓
               </button>
             </div>
-          </div>
-        </div>
+          </header>
 
-        <!-- Intro Section -->
-        <div
-          class="bg-black/40 backdrop-blur-sm border-b border-gray-700 p-4 text-sm md:text-base leading-relaxed"
-        >
-          <p class="text-gray-300">
-            환영합니다, 모험가! 이 텍스트 기반 RPG에서 다양한 장소를 탐험하고
-            몬스터와 싸워보세요. 아래 로그는 세계에서 벌어지는 일을 보여주며,
-            오른쪽 패널의 버튼으로 캐릭터를 조작할 수 있습니다.
-          </p>
-        </div>
+          <section class="px-6 pt-4 pb-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div
+                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col gap-4"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-xs uppercase tracking-wider text-gray-400">
+                      레벨
+                    </div>
+                    <div class="text-2xl font-extrabold text-white">
+                      Lv. <span id="player-level">1</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-xs uppercase tracking-wider text-gray-400">
+                      골드
+                    </div>
+                    <div
+                      id="player-gold"
+                      class="text-game-warning font-bold text-xl"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+                <div class="space-y-3">
+                  <div>
+                    <div
+                      class="flex items-center justify-between text-xs text-gray-300"
+                    >
+                      <span>체력</span>
+                      <span id="player-hp" class="font-semibold text-white"
+                        >100/100</span
+                      >
+                    </div>
+                    <div
+                      class="mt-1 h-2 bg-gray-700 rounded-full overflow-hidden"
+                    >
+                      <div
+                        id="player-hp-bar-main"
+                        class="h-2 bg-game-success rounded-full transition-all duration-300"
+                        style="width: 100%"
+                      ></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="flex items-center justify-between text-xs text-gray-300"
+                    >
+                      <span>경험치</span>
+                      <span id="player-exp" class="font-semibold text-white"
+                        >0/100</span
+                      >
+                    </div>
+                    <div
+                      class="mt-1 h-2 bg-gray-700 rounded-full overflow-hidden"
+                    >
+                      <div
+                        id="player-exp-bar"
+                        class="h-2 bg-game-accent rounded-full transition-all duration-300"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs">
+                  <div class="bg-white/10 px-3 py-1 rounded-full font-semibold">
+                    ⚔️ 공격력
+                    <span id="player-attack" class="ml-1 text-white">10</span>
+                  </div>
+                  <div class="bg-white/10 px-3 py-1 rounded-full font-semibold">
+                    🛡️ 방어력
+                    <span id="player-defense" class="ml-1 text-white">5</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col gap-3"
+              >
+                <div class="flex items-center justify-between">
+                  <h2
+                    class="text-sm font-semibold text-game-accent uppercase tracking-wider"
+                  >
+                    현재 위치
+                  </h2>
+                  <span class="text-xs text-gray-400">월드 정보</span>
+                </div>
+                <div class="bg-black/40 border border-gray-700 rounded-xl p-3">
+                  <div
+                    id="current-room-name"
+                    class="text-xl font-bold text-white"
+                  >
+                    시작의 마을
+                  </div>
+                  <div
+                    class="mt-3 grid grid-cols-2 gap-3 text-xs text-gray-300"
+                  >
+                    <div>
+                      <div
+                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                      >
+                        출구
+                      </div>
+                      <div id="available-exits" class="mt-1 text-sm text-white">
+                        북, 남, 서, 동
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                      >
+                        몬스터
+                      </div>
+                      <div id="room-monsters" class="mt-1 text-sm text-white">
+                        없음
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                      >
+                        NPC
+                      </div>
+                      <div id="room-npcs" class="mt-1 text-sm text-white">
+                        없음
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                      >
+                        아이템
+                      </div>
+                      <div id="room-items" class="mt-1 text-sm text-white">
+                        없음
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  id="mini-map"
+                  class="bg-black/35 border border-gray-700 rounded-xl p-3 flex items-start gap-4"
+                >
+                  <div class="flex-1">
+                    <div
+                      class="text-xs text-gray-400 uppercase tracking-widest"
+                    >
+                      미니맵
+                    </div>
+                    <div
+                      id="mini-map-grid"
+                      class="mt-2 grid gap-1 w-full max-w-[160px] sm:max-w-[200px] min-h-[48px]"
+                    ></div>
+                    <p
+                      id="mini-map-hint"
+                      class="mt-2 text-[0.7rem] text-gray-500 leading-relaxed"
+                    >
+                      탐험을 시작하세요
+                    </p>
+                  </div>
+                  <button
+                    id="toggle-map-button"
+                    class="shrink-0 bg-gray-700/80 hover:bg-gray-600 rounded-xl px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                  >
+                    🗺️ 전체 지도
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col md:flex-row p-4 gap-4">
-          <!-- Game Log -->
-          <div class="flex-1">
+          <section class="px-6 flex-1 pb-3">
             <div
-              class="bg-black/40 rounded-lg border border-gray-600 h-full min-h-[320px] flex flex-col"
+              class="bg-black/45 border border-gray-700 rounded-2xl h-full flex flex-col overflow-hidden"
             >
               <div
-                class="flex justify-between items-center p-4 border-b border-gray-600"
+                class="flex items-center justify-between border-b border-gray-700 px-5 py-3"
               >
                 <h3 class="text-lg font-bold text-game-accent">게임 로그</h3>
                 <button
                   id="clear-log"
-                  class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+                  class="bg-gray-700/70 hover:bg-gray-600 rounded-full px-4 py-2 text-sm transition-colors"
                 >
-                  🗑️ 지우기
+                  🗑️ 로그 지우기
                 </button>
               </div>
               <div
                 id="log-window"
-                class="flex-1 p-4 overflow-y-auto space-y-2 text-sm"
+                class="flex-1 px-5 py-4 overflow-y-auto space-y-2 text-sm"
               >
                 <div class="text-gray-400">게임이 시작되었습니다...</div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <!-- Right Panel - Movement & Items -->
-          <div
-            class="w-full md:w-80 bg-game-card/80 backdrop-blur-sm border-t md:border-t-0 md:border-l border-gray-700 p-4 space-y-4 md:h-auto md:overflow-y-auto"
-          >
-            <!-- Movement Controls -->
-            <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
-              <h3 class="text-lg font-bold text-game-accent mb-3">이동</h3>
-              <div class="grid grid-cols-2 gap-2">
-                <button
-                  class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors"
-                  data-dir="북"
+          <section class="px-6 pb-5">
+            <div class="grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] gap-3.5">
+              <div
+                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col"
+              >
+                <h3
+                  class="text-sm font-semibold text-game-accent uppercase tracking-widest mb-3"
                 >
-                  <div class="text-center">
-                    <div class="text-2xl">⬆️</div>
-                    <div class="text-sm">북</div>
-                  </div>
-                </button>
-                <button
-                  class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors"
-                  data-dir="남"
+                  빠른 명령
+                </h3>
+                <div class="grid grid-cols-3 gap-2">
+                  <button
+                    id="inspect-button"
+                    class="bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2 text-sm font-medium transition-colors"
+                  >
+                    🔍 주변
+                  </button>
+                  <button
+                    id="interaction-button"
+                    class="bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2 text-sm font-medium transition-colors"
+                  >
+                    🤝 상호작용
+                  </button>
+                  <button
+                    id="inventory-button"
+                    class="bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2 text-sm font-medium transition-colors"
+                  >
+                    🎒 인벤토리
+                  </button>
+                  <button
+                    id="attack-button"
+                    class="col-span-3 bg-game-danger hover:bg-red-600 rounded-xl py-2 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled
+                  >
+                    ⚔️ 공격
+                  </button>
+                </div>
+              </div>
+              <div
+                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col gap-3"
+              >
+                <h3
+                  class="text-sm font-semibold text-game-accent uppercase tracking-widest"
                 >
-                  <div class="text-center">
-                    <div class="text-2xl">⬇️</div>
-                    <div class="text-sm">남</div>
+                  이동
+                </h3>
+                <div class="grid grid-cols-3 grid-rows-3 gap-2">
+                  <div></div>
+                  <button
+                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    data-dir="북"
+                  >
+                    <span class="text-2xl">⬆️</span>
+                    <span class="text-xs mt-1">북</span>
+                  </button>
+                  <div></div>
+                  <button
+                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    data-dir="서"
+                  >
+                    <span class="text-2xl">⬅️</span>
+                    <span class="text-xs mt-1">서</span>
+                  </button>
+                  <div
+                    class="flex items-center justify-center text-xs text-gray-500"
+                  >
+                    <div
+                      class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center"
+                    >
+                      방향
+                    </div>
                   </div>
-                </button>
-                <button
-                  class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors"
-                  data-dir="서"
-                >
-                  <div class="text-center">
-                    <div class="text-2xl">⬅️</div>
-                    <div class="text-sm">서</div>
-                  </div>
-                </button>
-                <button
-                  class="btn-direction bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors"
-                  data-dir="동"
-                >
-                  <div class="text-center">
-                    <div class="text-2xl">➡️</div>
-                    <div class="text-sm">동</div>
-                  </div>
-                </button>
+                  <button
+                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    data-dir="동"
+                  >
+                    <span class="text-2xl">➡️</span>
+                    <span class="text-xs mt-1">동</span>
+                  </button>
+                  <div></div>
+                  <button
+                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    data-dir="남"
+                  >
+                    <span class="text-2xl">⬇️</span>
+                    <span class="text-xs mt-1">남</span>
+                  </button>
+                  <div></div>
+                </div>
               </div>
             </div>
-
-            <!-- Room Items -->
-            <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
-              <h3 class="text-lg font-bold text-game-accent mb-3">방 아이템</h3>
-              <div id="item-buttons" class="space-y-2">
-                <div class="text-gray-400 text-sm">아이템이 없습니다</div>
-              </div>
-            </div>
-
-            <!-- Inventory -->
-            <div class="bg-black/40 rounded-lg p-4 border border-gray-600">
-              <h3 class="text-lg font-bold text-game-accent mb-3">인벤토리</h3>
-              <div id="inventory-buttons" class="space-y-2">
-                <div class="text-gray-400 text-sm">비어있습니다</div>
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>
@@ -357,13 +457,67 @@
       </div>
     </div>
 
+    <!-- Interaction Modal -->
+    <div
+      id="interaction-modal"
+      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-game-card border border-gray-600 rounded-2xl p-6 w-11/12 max-w-md space-y-5"
+      >
+        <div class="flex justify-between items-center">
+          <h3 class="text-xl font-bold text-game-accent">상호작용</h3>
+          <button
+            id="close-interaction"
+            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="space-y-4 text-sm">
+          <div>
+            <h4 class="text-gray-200 font-semibold mb-2">획득 가능한 아이템</h4>
+            <div
+              id="item-buttons"
+              class="space-y-2 max-h-48 overflow-y-auto pr-1"
+            >
+              <div class="text-gray-400 text-sm">아이템이 없습니다</div>
+            </div>
+          </div>
+          <div
+            class="bg-black/40 border border-gray-600 rounded-xl p-4 space-y-3"
+          >
+            <p class="text-sm font-semibold text-white">주요 환경 정보</p>
+            <div class="grid grid-cols-2 gap-3 text-xs text-gray-300">
+              <div>
+                <div class="text-gray-400">출구</div>
+                <div id="modal-exits" class="text-white text-sm">-</div>
+              </div>
+              <div>
+                <div class="text-gray-400">NPC</div>
+                <div id="modal-npcs" class="text-white text-sm">-</div>
+              </div>
+              <div>
+                <div class="text-gray-400">몬스터</div>
+                <div id="modal-monsters" class="text-white text-sm">-</div>
+              </div>
+              <div>
+                <div class="text-gray-400">아이템</div>
+                <div id="modal-items" class="text-white text-sm">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Inventory Modal -->
     <div
       id="inventory-modal"
       class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md"
+        class="bg-game-card border border-gray-600 rounded-2xl p-6 w-11/12 max-w-md"
       >
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold text-game-accent">인벤토리</h3>
@@ -374,7 +528,10 @@
             ✕
           </button>
         </div>
-        <div id="inventory-content" class="space-y-2">
+        <div
+          id="inventory-buttons"
+          class="space-y-2 max-h-64 overflow-y-auto pr-1 text-sm"
+        >
           <div class="text-gray-400 text-center py-4">
             인벤토리가 비어있습니다
           </div>
@@ -441,8 +598,8 @@
         </div>
         <div class="space-y-3 text-sm">
           <div>
-            <strong class="text-game-accent">이동:</strong> 방향 버튼 또는 WASD
-            키
+            <strong class="text-game-accent">이동:</strong> 방향 패드 또는 WASD/
+            화살표 키
           </div>
           <div>
             <strong class="text-game-accent">공격:</strong> 스페이스바 또는 공격
@@ -452,11 +609,16 @@
             <strong class="text-game-accent">주변 탐색:</strong> 주변 버튼
           </div>
           <div>
-            <strong class="text-game-accent">지도:</strong> 지도 버튼 또는 M 키
+            <strong class="text-game-accent">지도:</strong> 미니맵의 전체 지도
+            버튼 또는 M 키
           </div>
           <div>
             <strong class="text-game-accent">인벤토리:</strong> 인벤토리 버튼
             또는 I 키
+          </div>
+          <div>
+            <strong class="text-game-accent">상호작용:</strong> 상호작용 버튼
+            또는 E 키
           </div>
         </div>
       </div>
