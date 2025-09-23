@@ -19,10 +19,30 @@ let isHelpModalVisible = false;
 let isInteractionModalVisible = false;
 
 function setupEventListeners() {
+  // Add visual feedback for button interactions
+  function addButtonFeedback(button, action) {
+    button.style.transform = "scale(0.95)";
+    setTimeout(() => {
+      button.style.transform = "";
+    }, 150);
+
+    // Add ripple effect
+    const ripple = document.createElement("div");
+    ripple.className = "absolute inset-0 bg-white/20 rounded-xl animate-ping pointer-events-none";
+    button.style.position = "relative";
+    button.appendChild(ripple);
+    setTimeout(() => {
+      if (ripple.parentNode) {
+        ripple.parentNode.removeChild(ripple);
+      }
+    }, 600);
+  }
+
   // Movement buttons
   document.querySelectorAll(".btn-direction").forEach((btn) => {
     btn.addEventListener("click", () => {
       const dir = btn.getAttribute("data-dir");
+      addButtonFeedback(btn);
       logMessage(`> 이동 ${dir}`);
       parseCommand(`이동 ${dir}`);
       updateUI();
@@ -31,18 +51,21 @@ function setupEventListeners() {
   });
 
   // Action buttons
-  document.getElementById("inspect-button").addEventListener("click", () => {
+  document.getElementById("inspect-button").addEventListener("click", (e) => {
+    addButtonFeedback(e.currentTarget);
     logMessage("> 주변");
     parseCommand("주변");
     updateUI();
     addRecentAction("주변 탐색");
   });
 
-  document.getElementById("toggle-map-button").addEventListener("click", () => {
+  document.getElementById("toggle-map-button").addEventListener("click", (e) => {
+    addButtonFeedback(e.currentTarget);
     toggleMap();
   });
 
-  document.getElementById("attack-button").addEventListener("click", () => {
+  document.getElementById("attack-button").addEventListener("click", (e) => {
+    addButtonFeedback(e.currentTarget);
     logMessage("> 공격");
     parseCommand("공격");
     updateUI();
@@ -51,27 +74,32 @@ function setupEventListeners() {
 
   const interactionBtn = document.getElementById("interaction-button");
   if (interactionBtn) {
-    interactionBtn.addEventListener("click", () => {
+    interactionBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       toggleInteraction();
     });
   }
 
-  document.getElementById("inventory-button").addEventListener("click", () => {
+  document.getElementById("inventory-button").addEventListener("click", (e) => {
+    addButtonFeedback(e.currentTarget);
     toggleInventory();
   });
 
-  document.getElementById("settings-button").addEventListener("click", () => {
+  document.getElementById("settings-button").addEventListener("click", (e) => {
+    addButtonFeedback(e.currentTarget);
     toggleSettings();
   });
 
-  document.getElementById("help-button").addEventListener("click", () => {
+  document.getElementById("help-button").addEventListener("click", (e) => {
+    addButtonFeedback(e.currentTarget);
     toggleHelp();
   });
 
   // Combat modal buttons
   const modalAtkBtn = document.getElementById("combat-attack-button");
   if (modalAtkBtn) {
-    modalAtkBtn.addEventListener("click", () => {
+    modalAtkBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       logMessage("> 공격");
       parseCommand("공격");
       updateUI();
@@ -81,7 +109,8 @@ function setupEventListeners() {
 
   const fleeBtn = document.getElementById("combat-flee-button");
   if (fleeBtn) {
-    fleeBtn.addEventListener("click", () => {
+    fleeBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       logMessage("> 도망");
       parseCommand("도망");
       updateUI();
@@ -93,42 +122,48 @@ function setupEventListeners() {
   // Modal close buttons
   const closeCombatBtn = document.getElementById("close-combat");
   if (closeCombatBtn) {
-    closeCombatBtn.addEventListener("click", () => {
+    closeCombatBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       closeCombatModal();
     });
   }
 
   const closeMapBtn = document.getElementById("close-map");
   if (closeMapBtn) {
-    closeMapBtn.addEventListener("click", () => {
+    closeMapBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       closeMap();
     });
   }
 
   const closeInventoryBtn = document.getElementById("close-inventory");
   if (closeInventoryBtn) {
-    closeInventoryBtn.addEventListener("click", () => {
+    closeInventoryBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       closeInventory();
     });
   }
 
   const closeInteractionBtn = document.getElementById("close-interaction");
   if (closeInteractionBtn) {
-    closeInteractionBtn.addEventListener("click", () => {
+    closeInteractionBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       closeInteraction();
     });
   }
 
   const closeSettingsBtn = document.getElementById("close-settings");
   if (closeSettingsBtn) {
-    closeSettingsBtn.addEventListener("click", () => {
+    closeSettingsBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       closeSettings();
     });
   }
 
   const closeHelpBtn = document.getElementById("close-help");
   if (closeHelpBtn) {
-    closeHelpBtn.addEventListener("click", () => {
+    closeHelpBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       closeHelp();
     });
   }
@@ -136,7 +171,8 @@ function setupEventListeners() {
   // Clear log button
   const clearLogBtn = document.getElementById("clear-log");
   if (clearLogBtn) {
-    clearLogBtn.addEventListener("click", () => {
+    clearLogBtn.addEventListener("click", (e) => {
+      addButtonFeedback(e.currentTarget);
       clearLog();
     });
   }
@@ -348,8 +384,64 @@ function closeCombatModal() {
 function clearLog() {
   const logWindow = document.getElementById("log-window");
   logWindow.innerHTML =
-    '<div class="text-gray-400">로그가 지워졌습니다...</div>';
+    '<div class="text-game-text-secondary text-center py-4 animate-pulse-slow">📜 로그가 지워졌습니다...</div>';
   addRecentAction("로그 지우기");
+}
+
+// Enhanced log message function with different types and styling
+function logMessage(message, type = 'normal') {
+  const logWindow = document.getElementById("log-window");
+
+  // Create log entry with timestamp and styling
+  const logEntry = document.createElement("div");
+  logEntry.className = "py-2 px-3 rounded-lg transition-all duration-300 hover:bg-game-surface/20";
+
+  // Add different styling based on message type
+  if (type === 'combat') {
+    logEntry.className += " bg-game-danger/10 border-l-4 border-game-danger animate-pulse-fast";
+  } else if (type === 'success') {
+    logEntry.className += " bg-game-success/10 border-l-4 border-game-success";
+  } else if (type === 'warning') {
+    logEntry.className += " bg-game-warning/10 border-l-4 border-game-warning";
+  } else if (type === 'info') {
+    logEntry.className += " bg-game-info/10 border-l-4 border-game-info";
+  } else {
+    logEntry.className += " bg-game-surface/30 border-l-4 border-game-accent/50";
+  }
+
+  // Add icon based on message content
+  let icon = '💬';
+  if (message.includes('이동')) icon = '🧭';
+  else if (message.includes('공격') || message.includes('전투')) icon = '⚔️';
+  else if (message.includes('경험치') || message.includes('레벨업')) icon = '⭐';
+  else if (message.includes('골드') || message.includes('줍기')) icon = '💰';
+  else if (message.includes('체력') || message.includes('회복')) icon = '❤️';
+  else if (message.includes('몬스터') || message.includes('드래곤') || message.includes('고블린') || message.includes('오크') || message.includes('트롤')) icon = '👹';
+  else if (message.includes('아이템')) icon = '📦';
+  else if (message.includes('게임')) icon = '🎮';
+  else if (message.includes('도움말')) icon = '❓';
+  else if (message.includes('지도')) icon = '🗺️';
+
+  logEntry.innerHTML = `<span class="mr-2">${icon}</span>${message}`;
+
+  // Add fade-in animation
+  logEntry.style.opacity = '0';
+  logEntry.style.transform = 'translateY(10px)';
+  logWindow.appendChild(logEntry);
+
+  // Animate in
+  setTimeout(() => {
+    logEntry.style.opacity = '1';
+    logEntry.style.transform = 'translateY(0)';
+  }, 50);
+
+  // Keep only last 100 messages
+  while (logWindow.children.length > 100) {
+    logWindow.removeChild(logWindow.firstChild);
+  }
+
+  // Auto scroll to bottom
+  logWindow.scrollTop = logWindow.scrollHeight;
 }
 
 function updateInventoryDisplay() {
@@ -521,10 +613,14 @@ window.addEventListener("load", () => {
     initUI();
     setupEventListeners();
     updateUI();
-    logMessage("🎮 환상의 세계 MUD에 오신 것을 환영합니다!");
-    logMessage("💡 이동하려면 방향 버튼을 클릭하거나 WASD 키를 사용하세요.");
-    logMessage("⚔️ 전투가 시작되면 공격 버튼이 활성화됩니다.");
-    logMessage("🗺️ 지도 버튼으로 월드 맵을 확인할 수 있습니다.");
+
+    // Enhanced welcome messages with different types
+    logMessage("🎮 환상의 세계 MUD에 오신 것을 환영합니다!", 'success');
+    setTimeout(() => logMessage("💡 이동하려면 방향 버튼을 클릭하거나 WASD 키를 사용하세요.", 'info'), 500);
+    setTimeout(() => logMessage("⚔️ 전투가 시작되면 공격 버튼이 활성화됩니다.", 'warning'), 1000);
+    setTimeout(() => logMessage("🗺️ 지도 버튼으로 월드 맵을 확인할 수 있습니다.", 'info'), 1500);
+    setTimeout(() => logMessage("🎯 게임을 시작하려면 주변을 탐색해보세요!", 'success'), 2000);
+
     hideLoading();
   }, 1000);
 });

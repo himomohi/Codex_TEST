@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>환상의 세계 MUD</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -12,14 +15,98 @@
             colors: {
               "game-dark": "#0a0a0f",
               "game-card": "#1a1a2e",
+              "game-card-secondary": "#16213e",
               "game-accent": "#00d4ff",
+              "game-accent-light": "#4dd9ff",
+              "game-accent-dark": "#00a8cc",
               "game-danger": "#ff6b6b",
+              "game-danger-light": "#ff8a8a",
               "game-success": "#51cf66",
+              "game-success-light": "#70d985",
               "game-warning": "#ffd43b",
+              "game-warning-light": "#ffe066",
+              "game-info": "#7c3aed",
+              "game-info-light": "#9c5de8",
+              "game-surface": "#0f172a",
+              "game-surface-light": "#1e293b",
+              "game-text-primary": "#f8fafc",
+              "game-text-secondary": "#cbd5e1",
+              "game-text-muted": "#64748b",
             },
             fontFamily: {
-              game: ["Inter", "sans-serif"],
+              game: ["Noto Sans KR", "Inter", "sans-serif"],
               mono: ["JetBrains Mono", "monospace"],
+              display: ["Noto Sans KR", "Inter", "sans-serif"],
+            },
+            backgroundImage: {
+              'game-pattern': "radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(81, 207, 102, 0.1) 0%, transparent 50%)",
+              'game-mesh': "linear-gradient(45deg, rgba(0, 212, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(0, 212, 255, 0.05) 75%), linear-gradient(-45deg, rgba(0, 212, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(0, 212, 255, 0.05) 75%)",
+              'game-grid': "linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px)",
+              'game-radial': "radial-gradient(ellipse at center, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 25%, transparent 50%)",
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'glow': 'glow 2s ease-in-out infinite alternate',
+              'shimmer': 'shimmer 2s linear infinite',
+              'bounce-slow': 'bounce 2s infinite',
+              'spin-slow': 'spin 3s linear infinite',
+              'gradient-x': 'gradient-x 3s ease infinite',
+              'gradient-y': 'gradient-y 4s ease infinite',
+              'gradient-xy': 'gradient-xy 5s ease infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              glow: {
+                '0%': { boxShadow: '0 0 5px rgba(0, 212, 255, 0.5)' },
+                '100%': { boxShadow: '0 0 20px rgba(0, 212, 255, 0.8), 0 0 30px rgba(0, 212, 255, 0.4)' },
+              },
+              shimmer: {
+                '0%': { backgroundPosition: '-200% 0' },
+                '100%': { backgroundPosition: '200% 0' },
+              },
+              'gradient-x': {
+                '0%, 100%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'left center'
+                },
+                '50%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'right center'
+                },
+              },
+              'gradient-y': {
+                '0%, 100%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'center top'
+                },
+                '50%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'center bottom'
+                },
+              },
+              'gradient-xy': {
+                '0%, 100%': {
+                  'background-size': '400% 400%',
+                  'background-position': 'left center'
+                },
+                '50%': {
+                  'background-size': '400% 400%',
+                  'background-position': 'right center'
+                },
+              },
+            },
+            boxShadow: {
+              'game': '0 0 20px rgba(0, 212, 255, 0.1)',
+              'game-lg': '0 0 30px rgba(0, 212, 255, 0.2)',
+              'game-xl': '0 0 50px rgba(0, 212, 255, 0.3)',
+              'game-inner': 'inset 0 0 20px rgba(0, 212, 255, 0.1)',
+              'game-danger': '0 0 20px rgba(255, 107, 107, 0.2)',
+              'game-success': '0 0 20px rgba(81, 207, 102, 0.2)',
             },
           },
         },
@@ -31,45 +118,62 @@
     />
   </head>
   <body
-    class="bg-gradient-to-br from-game-dark to-gray-900 text-white font-game min-h-screen h-screen overflow-hidden"
+    class="bg-gradient-to-br from-game-dark via-game-surface to-gray-900 text-white font-game min-h-screen h-screen overflow-hidden relative"
   >
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-game-pattern opacity-20 animate-pulse-slow"></div>
+      <div class="absolute top-3/4 right-1/4 w-96 h-96 bg-game-radial opacity-15 animate-pulse-fast"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-game-mesh opacity-10 animate-spin-slow"></div>
+      <div class="absolute inset-0 bg-game-grid opacity-[0.02]" style="background-size: 50px 50px;"></div>
+    </div>
+
     <div
-      class="min-h-screen h-full flex items-center justify-center p-4 sm:p-6"
+      class="min-h-screen h-full flex items-center justify-center p-4 sm:p-6 relative z-10"
     >
       <div
-        class="relative w-full h-full max-w-4xl bg-game-card/60 border border-gray-800 rounded-3xl overflow-hidden shadow-2xl"
+        class="relative w-full h-full max-w-4xl bg-gradient-to-br from-game-card/80 via-game-card-secondary/60 to-game-surface/80 border border-gray-800/50 rounded-3xl overflow-hidden shadow-game-xl backdrop-blur-sm"
       >
         <div
-          class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-game-accent/15 pointer-events-none"
+          class="absolute inset-0 bg-gradient-to-br from-game-accent/10 via-transparent to-game-success/10 pointer-events-none animate-gradient-xy"
         ></div>
+        <div class="absolute inset-0 bg-game-mesh opacity-[0.03] pointer-events-none"></div>
         <div class="relative z-10 flex flex-col h-full">
           <header
-            class="px-6 py-3 bg-black/40 border-b border-gray-800 flex items-center justify-between gap-4"
+            class="px-6 py-4 bg-gradient-to-r from-black/50 via-game-surface/30 to-black/50 border-b border-gray-800/60 backdrop-blur-sm flex items-center justify-between gap-4"
           >
-            <div>
-              <h1
-                class="text-2xl font-extrabold tracking-wide text-game-accent"
-              >
-                환상의 세계 MUD
-              </h1>
-              <p class="text-xs text-gray-400 mt-1">
-                실시간 텍스트 MMORPG 어드벤처에 오신 것을 환영합니다
-              </p>
+            <div class="flex items-center gap-4">
+              <div class="relative">
+                <div class="absolute -inset-1 bg-game-accent/20 rounded-lg blur opacity-75 animate-pulse-slow"></div>
+                <div class="relative bg-game-accent/10 p-2 rounded-lg">
+                  <span class="text-2xl animate-bounce-slow">🎮</span>
+                </div>
+              </div>
+              <div>
+                <h1
+                  class="text-3xl font-bold tracking-tight bg-gradient-to-r from-game-accent-light via-game-accent to-game-accent-dark bg-clip-text text-transparent animate-gradient-x"
+                >
+                  환상의 세계 MUD
+                </h1>
+                <p class="text-sm text-game-text-secondary mt-1 font-medium">
+                  ✨ 실시간 텍스트 MMORPG 어드벤처에 오신 것을 환영합니다
+                </p>
+              </div>
             </div>
             <div class="flex items-center gap-2">
               <button
                 id="settings-button"
-                class="bg-gray-700/70 hover:bg-gray-600 rounded-full p-3 transition-colors"
+                class="group bg-gradient-to-br from-game-surface-light/80 to-game-surface/60 hover:from-game-accent/20 hover:to-game-accent/10 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game"
                 aria-label="설정 열기"
               >
-                ⚙️
+                <span class="text-lg group-hover:animate-spin-slow">⚙️</span>
               </button>
               <button
                 id="help-button"
-                class="bg-gray-700/70 hover:bg-gray-600 rounded-full p-3 transition-colors"
+                class="group bg-gradient-to-br from-game-surface-light/80 to-game-surface/60 hover:from-game-info/20 hover:to-game-info/10 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game"
                 aria-label="도움말 열기"
               >
-                ❓
+                <span class="text-lg group-hover:animate-pulse-fast">❓</span>
               </button>
             </div>
           </header>
@@ -77,138 +181,162 @@
           <section class="px-6 pt-4 pb-3">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div
-                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col gap-4"
+                class="bg-gradient-to-br from-game-surface/60 to-game-surface-light/30 border border-gray-700/60 rounded-2xl p-5 flex flex-col gap-5 backdrop-blur-sm hover:shadow-game transition-all duration-300"
               >
                 <div class="flex items-center justify-between">
-                  <div>
-                    <div class="text-xs uppercase tracking-wider text-gray-400">
-                      레벨
+                  <div class="flex items-center gap-3">
+                    <div class="bg-game-accent/10 p-2 rounded-xl">
+                      <span class="text-lg">👤</span>
                     </div>
-                    <div class="text-2xl font-extrabold text-white">
-                      Lv. <span id="player-level">1</span>
+                    <div>
+                      <div class="text-xs uppercase tracking-wider text-game-text-muted font-semibold">
+                        레벨
+                      </div>
+                      <div class="text-3xl font-bold text-game-text-primary">
+                        Lv. <span id="player-level" class="text-game-accent">1</span>
+                      </div>
                     </div>
                   </div>
-                  <div class="text-right">
-                    <div class="text-xs uppercase tracking-wider text-gray-400">
-                      골드
+                  <div class="text-right flex items-center gap-3">
+                    <div class="bg-game-warning/10 p-2 rounded-xl">
+                      <span class="text-lg">💰</span>
                     </div>
-                    <div
-                      id="player-gold"
-                      class="text-game-warning font-bold text-xl"
-                    >
-                      0
+                    <div>
+                      <div class="text-xs uppercase tracking-wider text-game-text-muted font-semibold">
+                        골드
+                      </div>
+                      <div
+                        id="player-gold"
+                        class="text-game-warning font-bold text-2xl"
+                      >
+                        0
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="space-y-3">
-                  <div>
+                <div class="space-y-4">
+                  <div class="bg-game-surface/50 rounded-xl p-3 border border-gray-700/30">
                     <div
-                      class="flex items-center justify-between text-xs text-gray-300"
+                      class="flex items-center justify-between text-sm text-game-text-secondary mb-2"
                     >
-                      <span>체력</span>
-                      <span id="player-hp" class="font-semibold text-white"
+                      <div class="flex items-center gap-2">
+                        <span class="text-game-danger">❤️</span>
+                        <span class="font-semibold">체력</span>
+                      </div>
+                      <span id="player-hp" class="font-bold text-game-text-primary"
                         >100/100</span
                       >
                     </div>
                     <div
-                      class="mt-1 h-2 bg-gray-700 rounded-full overflow-hidden"
+                      class="h-3 bg-gray-700/50 rounded-full overflow-hidden border border-gray-600/30"
                     >
                       <div
                         id="player-hp-bar-main"
-                        class="h-2 bg-game-success rounded-full transition-all duration-300"
+                        class="h-full bg-gradient-to-r from-game-danger to-game-danger-light rounded-full transition-all duration-500 shadow-game-danger"
                         style="width: 100%"
                       ></div>
                     </div>
                   </div>
-                  <div>
+                  <div class="bg-game-surface/50 rounded-xl p-3 border border-gray-700/30">
                     <div
-                      class="flex items-center justify-between text-xs text-gray-300"
+                      class="flex items-center justify-between text-sm text-game-text-secondary mb-2"
                     >
-                      <span>경험치</span>
-                      <span id="player-exp" class="font-semibold text-white"
+                      <div class="flex items-center gap-2">
+                        <span class="text-game-accent">⚡</span>
+                        <span class="font-semibold">경험치</span>
+                      </div>
+                      <span id="player-exp" class="font-bold text-game-text-primary"
                         >0/100</span
                       >
                     </div>
                     <div
-                      class="mt-1 h-2 bg-gray-700 rounded-full overflow-hidden"
+                      class="h-3 bg-gray-700/50 rounded-full overflow-hidden border border-gray-600/30"
                     >
                       <div
                         id="player-exp-bar"
-                        class="h-2 bg-game-accent rounded-full transition-all duration-300"
+                        class="h-full bg-gradient-to-r from-game-accent to-game-accent-light rounded-full transition-all duration-500 shadow-game"
                         style="width: 0%"
                       ></div>
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-wrap gap-2 text-xs">
-                  <div class="bg-white/10 px-3 py-1 rounded-full font-semibold">
-                    ⚔️ 공격력
-                    <span id="player-attack" class="ml-1 text-white">10</span>
+                <div class="flex flex-wrap gap-3">
+                  <div class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 px-4 py-2 rounded-xl font-semibold border border-game-danger/20 hover:shadow-game-danger transition-all duration-300 hover:scale-105">
+                    <div class="flex items-center gap-2">
+                      <span class="text-game-danger">⚔️</span>
+                      <span class="text-game-text-secondary">공격력</span>
+                    </div>
+                    <span id="player-attack" class="text-game-danger font-bold text-lg">10</span>
                   </div>
-                  <div class="bg-white/10 px-3 py-1 rounded-full font-semibold">
-                    🛡️ 방어력
-                    <span id="player-defense" class="ml-1 text-white">5</span>
+                  <div class="bg-gradient-to-r from-game-success/20 to-game-success/10 px-4 py-2 rounded-xl font-semibold border border-game-success/20 hover:shadow-game-success transition-all duration-300 hover:scale-105">
+                    <div class="flex items-center gap-2">
+                      <span class="text-game-success">🛡️</span>
+                      <span class="text-game-text-secondary">방어력</span>
+                    </div>
+                    <span id="player-defense" class="text-game-success font-bold text-lg">5</span>
                   </div>
                 </div>
               </div>
               <div
-                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col gap-3"
+                class="bg-gradient-to-br from-game-surface/60 to-game-surface-light/30 border border-gray-700/60 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur-sm hover:shadow-game transition-all duration-300"
               >
                 <div class="flex items-center justify-between">
                   <h2
-                    class="text-sm font-semibold text-game-accent uppercase tracking-wider"
+                    class="text-lg font-bold text-game-accent uppercase tracking-wider flex items-center gap-2"
                   >
+                    <span class="text-xl">🗺️</span>
                     현재 위치
                   </h2>
-                  <span class="text-xs text-gray-400">월드 정보</span>
+                  <span class="text-sm text-game-text-secondary bg-game-info/10 px-2 py-1 rounded-full">월드 정보</span>
                 </div>
-                <div class="bg-black/40 border border-gray-700 rounded-xl p-3">
+                <div class="bg-gradient-to-br from-game-surface/50 to-game-surface-light/20 border border-gray-700/30 rounded-xl p-4">
                   <div
                     id="current-room-name"
-                    class="text-xl font-bold text-white"
+                    class="text-2xl font-bold text-game-text-primary mb-3 flex items-center gap-2"
                   >
+                    <span class="animate-pulse">🏘️</span>
                     시작의 마을
                   </div>
                   <div
-                    class="mt-3 grid grid-cols-2 gap-3 text-xs text-gray-300"
+                    class="grid grid-cols-2 gap-4 text-sm"
                   >
-                    <div>
+                    <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
                       <div
-                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                        class="text-xs uppercase tracking-widest text-game-text-muted font-semibold mb-1"
                       >
                         출구
                       </div>
-                      <div id="available-exits" class="mt-1 text-sm text-white">
+                      <div id="available-exits" class="text-sm text-game-text-primary font-medium">
                         북, 남, 서, 동
                       </div>
                     </div>
-                    <div>
+                    <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
                       <div
-                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                        class="text-xs uppercase tracking-widest text-game-text-muted font-semibold mb-1"
                       >
                         몬스터
                       </div>
-                      <div id="room-monsters" class="mt-1 text-sm text-white">
+                      <div id="room-monsters" class="text-sm text-game-text-primary font-medium">
                         없음
                       </div>
                     </div>
-                    <div>
+                    <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
                       <div
-                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                        class="text-xs uppercase tracking-widest text-game-text-muted font-semibold mb-1"
                       >
                         NPC
                       </div>
-                      <div id="room-npcs" class="mt-1 text-sm text-white">
+                      <div id="room-npcs" class="text-sm text-game-text-primary font-medium">
                         없음
                       </div>
                     </div>
-                    <div>
+                    <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
                       <div
-                        class="text-[0.65rem] uppercase tracking-widest text-gray-400"
+                        class="text-xs uppercase tracking-widest text-game-text-muted font-semibold mb-1"
                       >
                         아이템
                       </div>
-                      <div id="room-items" class="mt-1 text-sm text-white">
+                      <div id="room-items" class="text-sm text-game-text-primary font-medium">
                         없음
                       </div>
                     </div>
@@ -216,21 +344,24 @@
                 </div>
                 <div
                   id="mini-map"
-                  class="bg-black/35 border border-gray-700 rounded-xl p-3 flex items-center gap-3"
+                  class="bg-gradient-to-br from-game-surface/50 to-game-surface-light/20 border border-gray-700/40 rounded-xl p-4 flex items-center gap-4 hover:shadow-game transition-all duration-300"
                 >
+                  <div class="bg-game-accent/10 p-3 rounded-xl">
+                    <span class="text-xl">🧭</span>
+                  </div>
                   <div class="flex-1">
                     <div
-                      class="text-xs text-gray-400 uppercase tracking-widest"
+                      class="text-sm text-game-accent uppercase tracking-widest font-semibold"
                     >
                       미니맵
                     </div>
-                    <div class="map-placeholder text-sm text-gray-500">
+                    <div class="map-placeholder text-sm text-game-text-secondary mt-1">
                       탐험을 시작하세요
                     </div>
                   </div>
                   <button
                     id="toggle-map-button"
-                    class="shrink-0 bg-gray-700/80 hover:bg-gray-600 rounded-xl px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                    class="shrink-0 bg-gradient-to-r from-game-accent/20 to-game-accent/10 hover:from-game-accent/30 hover:to-game-accent/20 border border-game-accent/30 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-game whitespace-nowrap"
                   >
                     🗺️ 전체 지도
                   </button>
@@ -241,114 +372,139 @@
 
           <section class="px-6 flex-1 pb-3">
             <div
-              class="bg-black/45 border border-gray-700 rounded-2xl h-full flex flex-col overflow-hidden"
+              class="bg-gradient-to-br from-game-surface/60 to-game-surface-light/30 border border-gray-700/60 rounded-2xl h-full flex flex-col overflow-hidden backdrop-blur-sm hover:shadow-game transition-all duration-300"
             >
               <div
-                class="flex items-center justify-between border-b border-gray-700 px-5 py-3"
+                class="flex items-center justify-between border-b border-gray-700/60 px-6 py-4 bg-gradient-to-r from-game-surface/40 to-game-surface-light/20"
               >
-                <h3 class="text-lg font-bold text-game-accent">게임 로그</h3>
+                <h3 class="text-xl font-bold text-game-accent flex items-center gap-2">
+                  <span class="text-lg">📜</span>
+                  게임 로그
+                </h3>
                 <button
                   id="clear-log"
-                  class="bg-gray-700/70 hover:bg-gray-600 rounded-full px-4 py-2 text-sm transition-colors"
+                  class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-game-danger"
                 >
                   🗑️ 로그 지우기
                 </button>
               </div>
               <div
                 id="log-window"
-                class="flex-1 px-5 py-4 overflow-y-auto space-y-2 text-sm"
+                class="flex-1 px-6 py-5 overflow-y-auto space-y-3 text-sm"
               >
-                <div class="text-gray-400">게임이 시작되었습니다...</div>
+                <div class="text-game-text-secondary font-medium">🎮 게임이 시작되었습니다...</div>
               </div>
             </div>
           </section>
 
           <section class="px-6 pb-5">
-            <div class="grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] gap-3.5">
+            <div class="grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] gap-4">
               <div
-                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col"
+                class="bg-gradient-to-br from-game-surface/60 to-game-surface-light/30 border border-gray-700/60 rounded-2xl p-5 flex flex-col backdrop-blur-sm hover:shadow-game transition-all duration-300"
               >
                 <h3
-                  class="text-sm font-semibold text-game-accent uppercase tracking-widest mb-3"
+                  class="text-lg font-bold text-game-accent uppercase tracking-wider mb-4 flex items-center gap-2"
                 >
+                  <span class="text-lg">⚡</span>
                   빠른 명령
                 </h3>
-                <div class="grid grid-cols-3 gap-2">
+                <div class="grid grid-cols-3 gap-3">
                   <button
                     id="inspect-button"
-                    class="bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2 text-sm font-medium transition-colors"
+                    class="group bg-gradient-to-br from-game-info/20 to-game-info/10 hover:from-game-info/30 hover:to-game-info/20 border border-game-info/30 rounded-xl py-3 text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-game"
                   >
-                    🔍 주변
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-lg group-hover:animate-pulse">🔍</span>
+                      <span>주변</span>
+                    </div>
                   </button>
                   <button
                     id="interaction-button"
-                    class="bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2 text-sm font-medium transition-colors"
+                    class="group bg-gradient-to-br from-game-success/20 to-game-success/10 hover:from-game-success/30 hover:to-game-success/20 border border-game-success/30 rounded-xl py-3 text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-game-success"
                   >
-                    🤝 상호작용
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-lg group-hover:animate-bounce-slow">🤝</span>
+                      <span>상호작용</span>
+                    </div>
                   </button>
                   <button
                     id="inventory-button"
-                    class="bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2 text-sm font-medium transition-colors"
+                    class="group bg-gradient-to-br from-game-warning/20 to-game-warning/10 hover:from-game-warning/30 hover:to-game-warning/20 border border-game-warning/30 rounded-xl py-3 text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-game"
                   >
-                    🎒 인벤토리
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-lg group-hover:animate-pulse-fast">🎒</span>
+                      <span>인벤토리</span>
+                    </div>
                   </button>
                   <button
                     id="attack-button"
-                    class="col-span-3 bg-game-danger hover:bg-red-600 rounded-xl py-2 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="col-span-3 bg-gradient-to-r from-game-danger to-game-danger-light hover:from-game-danger-light hover:to-game-danger border border-game-danger/50 rounded-xl py-4 text-lg font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 hover:shadow-game-danger disabled:hover:scale-100"
                     disabled
                   >
-                    ⚔️ 공격
+                    <div class="flex items-center justify-center gap-2">
+                      <span class="text-xl animate-pulse">⚔️</span>
+                      <span>공격</span>
+                    </div>
                   </button>
                 </div>
               </div>
               <div
-                class="bg-black/45 border border-gray-700 rounded-2xl p-4 flex flex-col gap-3"
+                class="bg-gradient-to-br from-game-surface/60 to-game-surface-light/30 border border-gray-700/60 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur-sm hover:shadow-game transition-all duration-300"
               >
                 <h3
-                  class="text-sm font-semibold text-game-accent uppercase tracking-widest"
+                  class="text-lg font-bold text-game-accent uppercase tracking-wider flex items-center gap-2"
                 >
+                  <span class="text-lg">🧭</span>
                   이동
                 </h3>
-                <div class="grid grid-cols-3 grid-rows-3 gap-2">
+                <div class="grid grid-cols-3 grid-rows-3 gap-3">
                   <div></div>
                   <button
-                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    class="btn-direction group bg-gradient-to-br from-game-accent/20 to-game-accent/10 hover:from-game-accent/30 hover:to-game-accent/20 border border-game-accent/30 rounded-xl py-4 transition-all duration-300 hover:scale-110 hover:shadow-game"
                     data-dir="북"
                   >
-                    <span class="text-2xl">⬆️</span>
-                    <span class="text-xs mt-1">북</span>
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-2xl group-hover:animate-bounce-slow">⬆️</span>
+                      <span class="text-sm font-bold">북</span>
+                    </div>
                   </button>
                   <div></div>
                   <button
-                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    class="btn-direction group bg-gradient-to-br from-game-accent/20 to-game-accent/10 hover:from-game-accent/30 hover:to-game-accent/20 border border-game-accent/30 rounded-xl py-4 transition-all duration-300 hover:scale-110 hover:shadow-game"
                     data-dir="서"
                   >
-                    <span class="text-2xl">⬅️</span>
-                    <span class="text-xs mt-1">서</span>
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-2xl group-hover:animate-pulse-fast">⬅️</span>
+                      <span class="text-sm font-bold">서</span>
+                    </div>
                   </button>
                   <div
-                    class="flex items-center justify-center text-xs text-gray-500"
+                    class="flex items-center justify-center"
                   >
                     <div
-                      class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center"
+                      class="w-16 h-16 rounded-full border-2 border-game-accent/30 flex items-center justify-center bg-game-accent/5"
                     >
-                      방향
+                      <span class="text-sm font-bold text-game-accent">방향</span>
                     </div>
                   </div>
                   <button
-                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    class="btn-direction group bg-gradient-to-br from-game-accent/20 to-game-accent/10 hover:from-game-accent/30 hover:to-game-accent/20 border border-game-accent/30 rounded-xl py-4 transition-all duration-300 hover:scale-110 hover:shadow-game"
                     data-dir="동"
                   >
-                    <span class="text-2xl">➡️</span>
-                    <span class="text-xs mt-1">동</span>
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-2xl group-hover:animate-pulse-fast">➡️</span>
+                      <span class="text-sm font-bold">동</span>
+                    </div>
                   </button>
                   <div></div>
                   <button
-                    class="btn-direction bg-gray-700/80 hover:bg-gray-600 rounded-xl py-2.5 transition-colors flex flex-col items-center justify-center"
+                    class="btn-direction group bg-gradient-to-br from-game-accent/20 to-game-accent/10 hover:from-game-accent/30 hover:to-game-accent/20 border border-game-accent/30 rounded-xl py-4 transition-all duration-300 hover:scale-110 hover:shadow-game"
                     data-dir="남"
                   >
-                    <span class="text-2xl">⬇️</span>
-                    <span class="text-xs mt-1">남</span>
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-2xl group-hover:animate-bounce-slow">⬇️</span>
+                      <span class="text-sm font-bold">남</span>
+                    </div>
                   </button>
                   <div></div>
                 </div>
@@ -362,65 +518,80 @@
     <!-- Combat Modal -->
     <div
       id="combat-modal"
-      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md"
+        class="bg-gradient-to-br from-game-card via-game-surface to-game-card border border-gray-600/60 rounded-2xl p-8 w-11/12 max-w-lg shadow-game-xl"
       >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-game-accent">전투</h3>
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-game-accent flex items-center gap-3">
+            <span class="text-2xl animate-pulse">⚔️</span>
+            전투
+          </h3>
           <button
             id="close-combat"
-            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+            class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game-danger"
           >
-            ✕
+            <span class="text-lg">✕</span>
           </button>
         </div>
-        <div id="combat-ui" class="space-y-4">
-          <div class="space-y-3">
-            <div class="bg-black/40 rounded p-3">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-bold text-white">플레이어</span>
-                <span id="player-hp-bar-text" class="text-sm text-gray-300"
+        <div id="combat-ui" class="space-y-6">
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-game-surface/60 to-game-surface/40 border border-gray-600/40 rounded-xl p-4">
+              <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">👤</span>
+                  <span class="font-bold text-game-text-primary">플레이어</span>
+                </div>
+                <span id="player-hp-bar-text" class="text-sm font-semibold text-game-text-primary"
                   >100/100</span
                 >
               </div>
-              <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="w-full bg-gray-700/50 rounded-full h-3 border border-gray-600/30">
                 <div
                   id="player-hp-bar"
-                  class="bg-game-success h-2 rounded-full transition-all duration-300"
+                  class="h-full bg-gradient-to-r from-game-success to-game-success-light rounded-full transition-all duration-500 shadow-game-success"
                   style="width: 100%"
                 ></div>
               </div>
             </div>
-            <div class="bg-black/40 rounded p-3">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-bold text-white">몬스터</span>
-                <span id="monster-hp-bar-text" class="text-sm text-gray-300"
+            <div class="bg-gradient-to-r from-game-surface/60 to-game-surface/40 border border-gray-600/40 rounded-xl p-4">
+              <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">👹</span>
+                  <span class="font-bold text-game-text-primary">몬스터</span>
+                </div>
+                <span id="monster-hp-bar-text" class="text-sm font-semibold text-game-text-primary"
                   >100/100</span
                 >
               </div>
-              <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="w-full bg-gray-700/50 rounded-full h-3 border border-gray-600/30">
                 <div
                   id="monster-hp-bar"
-                  class="bg-game-danger h-2 rounded-full transition-all duration-300"
+                  class="h-full bg-gradient-to-r from-game-danger to-game-danger-light rounded-full transition-all duration-500 shadow-game-danger"
                   style="width: 100%"
                 ></div>
               </div>
             </div>
           </div>
-          <div class="flex space-x-2">
+          <div class="flex space-x-3">
             <button
               id="combat-attack-button"
-              class="flex-1 bg-game-danger hover:bg-red-600 rounded p-3 transition-colors font-bold"
+              class="flex-1 bg-gradient-to-r from-game-danger to-game-danger-light hover:from-game-danger-light hover:to-game-danger border border-game-danger/50 rounded-xl p-4 transition-all duration-300 font-bold text-lg hover:scale-105 hover:shadow-game-danger"
             >
-              공격
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-xl animate-pulse">⚔️</span>
+                <span>공격</span>
+              </div>
             </button>
             <button
               id="combat-flee-button"
-              class="flex-1 bg-gray-700 hover:bg-gray-600 rounded p-3 transition-colors"
+              class="flex-1 bg-gradient-to-r from-game-warning/20 to-game-warning/10 hover:from-game-warning/30 hover:to-game-warning/20 border border-game-warning/30 rounded-xl p-4 transition-all duration-300 hover:scale-105 hover:shadow-game"
             >
-              도망
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-xl">🏃</span>
+                <span>도망</span>
+              </div>
             </button>
           </div>
         </div>
@@ -430,22 +601,25 @@
     <!-- Map Modal -->
     <div
       id="map-display"
-      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in p-4"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 md:w-4/5 h-[75vh] md:h-4/5 max-w-4xl max-h-[90vh]"
+        class="bg-gradient-to-br from-game-card via-game-surface to-game-card border border-gray-600/60 rounded-2xl p-6 w-full h-full max-w-6xl max-h-[95vh] flex flex-col shadow-game-xl"
       >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-game-accent">월드 맵</h3>
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-game-accent flex items-center gap-3">
+            <span class="text-2xl">🗺️</span>
+            월드 맵
+          </h3>
           <button
             id="close-map"
-            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+            class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game-danger"
           >
-            ✕
+            <span class="text-lg">✕</span>
           </button>
         </div>
-        <div class="bg-black/40 rounded p-4 h-full overflow-auto">
-          <pre id="map-grid" class="text-xs font-mono text-white"></pre>
+        <div class="bg-gradient-to-br from-game-surface/50 to-game-surface/30 rounded-xl p-4 h-full overflow-auto border border-gray-600/30">
+          <pre id="map-grid" class="text-sm font-mono text-game-text-primary leading-relaxed"></pre>
         </div>
       </div>
     </div>
@@ -453,50 +627,59 @@
     <!-- Interaction Modal -->
     <div
       id="interaction-modal"
-      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in p-4"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-2xl p-6 w-11/12 max-w-md space-y-5"
+        class="bg-gradient-to-br from-game-card via-game-surface to-game-card border border-gray-600/60 rounded-2xl p-6 w-full max-w-md space-y-6 shadow-game-xl max-h-[90vh] overflow-y-auto"
       >
         <div class="flex justify-between items-center">
-          <h3 class="text-xl font-bold text-game-accent">상호작용</h3>
+          <h3 class="text-2xl font-bold text-game-accent flex items-center gap-3">
+            <span class="text-2xl">🤝</span>
+            상호작용
+          </h3>
           <button
             id="close-interaction"
-            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+            class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game-danger"
           >
-            ✕
+            <span class="text-lg">✕</span>
           </button>
         </div>
-        <div class="space-y-4 text-sm">
+        <div class="space-y-6 text-sm">
           <div>
-            <h4 class="text-gray-200 font-semibold mb-2">획득 가능한 아이템</h4>
+            <h4 class="text-game-text-primary font-bold mb-3 flex items-center gap-2">
+              <span class="text-lg">📦</span>
+              획득 가능한 아이템
+            </h4>
             <div
               id="item-buttons"
-              class="space-y-2 max-h-48 overflow-y-auto pr-1"
+              class="space-y-3 max-h-56 overflow-y-auto pr-2"
             >
-              <div class="text-gray-400 text-sm">아이템이 없습니다</div>
+              <div class="text-game-text-secondary text-center py-4">아이템이 없습니다</div>
             </div>
           </div>
           <div
-            class="bg-black/40 border border-gray-600 rounded-xl p-4 space-y-3"
+            class="bg-gradient-to-br from-game-surface/50 to-game-surface/30 border border-gray-600/40 rounded-xl p-5 space-y-4"
           >
-            <p class="text-sm font-semibold text-white">주요 환경 정보</p>
-            <div class="grid grid-cols-2 gap-3 text-xs text-gray-300">
-              <div>
-                <div class="text-gray-400">출구</div>
-                <div id="modal-exits" class="text-white text-sm">-</div>
+            <p class="text-lg font-bold text-game-text-primary flex items-center gap-2">
+              <span class="text-lg">ℹ️</span>
+              주요 환경 정보
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
+                <div class="text-game-text-muted font-semibold text-sm">출구</div>
+                <div id="modal-exits" class="text-game-text-primary font-medium mt-1">-</div>
               </div>
-              <div>
-                <div class="text-gray-400">NPC</div>
-                <div id="modal-npcs" class="text-white text-sm">-</div>
+              <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
+                <div class="text-game-text-muted font-semibold text-sm">NPC</div>
+                <div id="modal-npcs" class="text-game-text-primary font-medium mt-1">-</div>
               </div>
-              <div>
-                <div class="text-gray-400">몬스터</div>
-                <div id="modal-monsters" class="text-white text-sm">-</div>
+              <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
+                <div class="text-game-text-muted font-semibold text-sm">몬스터</div>
+                <div id="modal-monsters" class="text-game-text-primary font-medium mt-1">-</div>
               </div>
-              <div>
-                <div class="text-gray-400">아이템</div>
-                <div id="modal-items" class="text-white text-sm">-</div>
+              <div class="bg-game-surface/40 rounded-lg p-3 border border-gray-600/30">
+                <div class="text-game-text-muted font-semibold text-sm">아이템</div>
+                <div id="modal-items" class="text-game-text-primary font-medium mt-1">-</div>
               </div>
             </div>
           </div>
@@ -507,25 +690,28 @@
     <!-- Inventory Modal -->
     <div
       id="inventory-modal"
-      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in p-4"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-2xl p-6 w-11/12 max-w-md"
+        class="bg-gradient-to-br from-game-card via-game-surface to-game-card border border-gray-600/60 rounded-2xl p-6 w-full max-w-md shadow-game-xl max-h-[90vh] overflow-y-auto"
       >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-game-accent">인벤토리</h3>
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-game-accent flex items-center gap-3">
+            <span class="text-2xl">🎒</span>
+            인벤토리
+          </h3>
           <button
             id="close-inventory"
-            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+            class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game-danger"
           >
-            ✕
+            <span class="text-lg">✕</span>
           </button>
         </div>
         <div
           id="inventory-buttons"
-          class="space-y-2 max-h-64 overflow-y-auto pr-1 text-sm"
+          class="space-y-3 max-h-80 overflow-y-auto pr-2 text-sm"
         >
-          <div class="text-gray-400 text-center py-4">
+          <div class="text-game-text-secondary text-center py-8">
             인벤토리가 비어있습니다
           </div>
         </div>
@@ -535,38 +721,41 @@
     <!-- Settings Modal -->
     <div
       id="settings-modal"
-      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in p-4"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md"
+        class="bg-gradient-to-br from-game-card via-game-surface to-game-card border border-gray-600/60 rounded-2xl p-6 w-full max-w-md shadow-game-xl"
       >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-game-accent">설정</h3>
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-game-accent flex items-center gap-3">
+            <span class="text-2xl">⚙️</span>
+            설정
+          </h3>
           <button
             id="close-settings"
-            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+            class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game-danger"
           >
-            ✕
+            <span class="text-lg">✕</span>
           </button>
         </div>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >사운드</label
+        <div class="space-y-6">
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <label class="block text-sm font-bold text-game-text-primary mb-3 flex items-center gap-2"
+              ><span class="text-lg">🔊</span>사운드</label
             >
-            <input type="range" min="0" max="100" value="50" class="w-full" />
+            <input type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider" />
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2"
-              >효과음</label
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <label class="block text-sm font-bold text-game-text-primary mb-3 flex items-center gap-2"
+              ><span class="text-lg">🔊</span>효과음</label
             >
-            <input type="range" min="0" max="100" value="30" class="w-full" />
+            <input type="range" min="0" max="100" value="30" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider" />
           </div>
-          <div class="flex items-center">
-            <input type="checkbox" id="auto-save" class="mr-2" />
-            <label for="auto-save" class="text-sm text-gray-300"
-              >자동 저장</label
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30 flex items-center justify-between">
+            <label for="auto-save" class="text-sm font-bold text-game-text-primary flex items-center gap-2 cursor-pointer"
+              ><span class="text-lg">💾</span>자동 저장</label
             >
+            <input type="checkbox" id="auto-save" class="w-5 h-5 text-game-accent bg-gray-700 border-gray-600 rounded focus:ring-game-accent focus:ring-2" />
           </div>
         </div>
       </div>
@@ -575,43 +764,65 @@
     <!-- Help Modal -->
     <div
       id="help-modal"
-      class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in p-4"
     >
       <div
-        class="bg-game-card border border-gray-600 rounded-lg p-6 w-11/12 max-w-md"
+        class="bg-gradient-to-br from-game-card via-game-surface to-game-card border border-gray-600/60 rounded-2xl p-6 w-full max-w-md shadow-game-xl max-h-[90vh] overflow-y-auto"
       >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-game-accent">도움말</h3>
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-game-accent flex items-center gap-3">
+            <span class="text-2xl">❓</span>
+            도움말
+          </h3>
           <button
             id="close-help"
-            class="bg-gray-700 hover:bg-gray-600 rounded p-2 transition-colors"
+            class="bg-gradient-to-r from-game-danger/20 to-game-danger/10 hover:from-game-danger/30 hover:to-game-danger/20 border border-game-danger/30 rounded-xl p-3 transition-all duration-300 hover:scale-110 hover:shadow-game-danger"
           >
-            ✕
+            <span class="text-lg">✕</span>
           </button>
         </div>
-        <div class="space-y-3 text-sm">
-          <div>
-            <strong class="text-game-accent">이동:</strong> 방향 패드 또는 WASD/
-            화살표 키
+        <div class="space-y-4 text-sm">
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">🧭</span>
+              <strong class="text-game-accent font-bold">이동:</strong>
+            </div>
+            <div class="text-game-text-primary">방향 패드 또는 WASD/화살표 키</div>
           </div>
-          <div>
-            <strong class="text-game-accent">공격:</strong> 스페이스바 또는 공격
-            버튼
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">⚔️</span>
+              <strong class="text-game-accent font-bold">공격:</strong>
+            </div>
+            <div class="text-game-text-primary">스페이스바 또는 공격 버튼</div>
           </div>
-          <div>
-            <strong class="text-game-accent">주변 탐색:</strong> 주변 버튼
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">🔍</span>
+              <strong class="text-game-accent font-bold">주변 탐색:</strong>
+            </div>
+            <div class="text-game-text-primary">주변 버튼</div>
           </div>
-          <div>
-            <strong class="text-game-accent">지도:</strong> 미니맵의 전체 지도
-            버튼 또는 M 키
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">🗺️</span>
+              <strong class="text-game-accent font-bold">지도:</strong>
+            </div>
+            <div class="text-game-text-primary">미니맵의 전체 지도 버튼 또는 M 키</div>
           </div>
-          <div>
-            <strong class="text-game-accent">인벤토리:</strong> 인벤토리 버튼
-            또는 I 키
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">🎒</span>
+              <strong class="text-game-accent font-bold">인벤토리:</strong>
+            </div>
+            <div class="text-game-text-primary">인벤토리 버튼 또는 I 키</div>
           </div>
-          <div>
-            <strong class="text-game-accent">상호작용:</strong> 상호작용 버튼
-            또는 E 키
+          <div class="bg-game-surface/40 rounded-xl p-4 border border-gray-600/30">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">🤝</span>
+              <strong class="text-game-accent font-bold">상호작용:</strong>
+            </div>
+            <div class="text-game-text-primary">상호작용 버튼 또는 E 키</div>
           </div>
         </div>
       </div>
@@ -620,15 +831,118 @@
     <!-- Loading Overlay -->
     <div
       id="loading-overlay"
-      class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 animate-fade-in"
     >
       <div class="text-center">
-        <div
-          class="animate-spin rounded-full h-12 w-12 border-b-2 border-game-accent mx-auto mb-4"
-        ></div>
-        <div class="text-white text-lg">로딩 중...</div>
+        <div class="relative mb-6">
+          <div
+            class="animate-spin rounded-full h-16 w-16 border-4 border-game-accent/20 border-t-game-accent mx-auto"
+          ></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-2xl animate-bounce-slow">🎮</span>
+          </div>
+        </div>
+        <div class="text-game-text-primary text-xl font-bold animate-pulse-slow">로딩 중...</div>
+        <div class="text-game-text-secondary text-sm mt-2">게임을 준비하고 있습니다</div>
       </div>
     </div>
+
+    <style>
+      /* Custom slider styling */
+      .slider::-webkit-slider-thumb {
+        appearance: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #00d4ff, #4dd9ff);
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .slider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+      }
+
+      .slider::-webkit-slider-track {
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, #374151, #4b5563);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+      }
+
+      .slider::-moz-range-thumb {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #00d4ff, #4dd9ff);
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .slider::-moz-range-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+      }
+
+      .slider::-moz-range-track {
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, #374151, #4b5563);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+      }
+
+      /* Custom scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, rgba(0, 212, 255, 0.5), rgba(77, 217, 255, 0.3));
+        border-radius: 4px;
+        border: 1px solid rgba(0, 212, 255, 0.2);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, rgba(0, 212, 255, 0.8), rgba(77, 217, 255, 0.6));
+      }
+
+      /* Fade in animation */
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fade-in 0.3s ease-out;
+      }
+
+      /* Selection styling */
+      ::selection {
+        background: rgba(0, 212, 255, 0.3);
+        color: #ffffff;
+      }
+
+      ::-moz-selection {
+        background: rgba(0, 212, 255, 0.3);
+        color: #ffffff;
+      }
+    </style>
 
     <script type="module" src="main.js"></script>
   </body>
